@@ -434,7 +434,7 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                         If (((Enemy == 10) Or (Enemy No.2 == 10)) And (Not (List.ContainsItem(flags, "en10"))))
                         {
                             List.DeleteAll(A Message Log);
-                            Call Story line add("(Eternally melanchony... Eternally...)") wait input(1) end of section("");
+                            Call Story line add("(Eternally melancholy... Eternally...)") wait input(1) end of section("");
                             Call Story line add("Drayden: Who the hell are you? Getting made to") wait input("") end of section("");
                             Call Story line add("be a crybaby in front of that witch?") wait input(1) end of section("");
                             Call Story line add("Lyra: But, well, God always favors good") wait input("") end of section("");
@@ -533,7 +533,7 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                             Call Story line add("Lyra: Now we have robots... Robots invading us?") wait input("") end of section("");
                             Call Story line add("What has God's realm came to?") wait input(1) end of section("");
                             Call Story line add("Drayden: Then I will let this one totally rot!") wait input("") end of section("");
-                            Call Story line add("(Hehe, because it's not concious, even better!!") wait input("") end of section("");
+                            Call Story line add("(Hehe, because it's not conscious, even better!!") wait input("") end of section("");
                             Call Story line add("Or... is it?)") wait input(1) end of section("");
                             Call Story line add("Drayden: Yeah, it should totally burn in hell!") wait input("") end of section("");
                             Call Story line add("Add some oil - I mean remove its oil!") wait input(1) end of section("");
@@ -570,7 +570,7 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                         {
                             List.Add(flags, "d11");
                             Looks.Show();
-                            Call Story line add("(But I suddenly feels ready again, and my") wait input("") end of section("");
+                            Call Story line add("(But I suddenly felt ready again, and my") wait input("") end of section("");
                             Call Story line add("wounds healed...") wait input("") end of section("");
                             Call Story line add("I wonder whether I am dreaming...") wait input("") end of section("");
                             Call Story line add("or not...)") wait input(1) end of section(1);
@@ -619,9 +619,9 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                 {
                     List.DeleteAll(A Message Log);
                     Call Story line add("Drayden: Help, the king of slimes held") wait input("") end of section("");
-                    Call Story line add("my body tighly in hostage!") wait input(1) end of section("");
+                    Call Story line add("my body tightly in hostage!") wait input(1) end of section("");
                     Call Story line add("(What is this cycle? Of the problems") wait input("") end of section("");
-                    Call Story line add("of aggresive monsters being thrown in") wait input("") end of section("");
+                    Call Story line add("of aggressive monsters being thrown in") wait input("") end of section("");
                     Call Story line add("my way? I've never seen them before!!)") wait input(1) end of section("");
                     Call Story line add("Drayden: Stop thinking, Celeste, just get rid of") wait input("") end of section("");
                     Call Story line add("this sticky stinker of a situation!") wait input(1) end of section("");
@@ -729,7 +729,7 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                         List.DeleteAll(A Message Log);
                         Looks.Show();
                         Call Story line add("Drayden: Phew, you really are the good king") wait input("") end of section("");
-                        Call Story line add("here! A king shouldn't be posessed by evil,") wait input("") end of section("");
+                        Call Story line add("here! A king shouldn't be possessed by evil,") wait input("") end of section("");
                         Call Story line add("restraining the freedom of mesomorphic men") wait input("") end of section("");
                         Call Story line add("like me menacingly!") wait input(1) end of section("");
                         Call Story line add("(Are there really kings? As there are high-status ") wait input("") end of section("");
@@ -876,7 +876,7 @@ WhenGreenFlagClicked()
                 {
                     Mspeed = 0;
                     Call Story line add("(So I have saved one particular state") wait input("") end of section("");
-                    Call Story line add("of my conciousness, or do I even have") wait input("") end of section("");
+                    Call Story line add("of my consciousness, or do I even have") wait input("") end of section("");
                     Call Story line add("it?)") wait input(1) end of section("");
                     Call Story line add("(Or am I just a being causing multiple parallel") wait input("") end of section("");
                     Call Story line add("time dimensions? Argh...)") wait input(1) end of section(1);
