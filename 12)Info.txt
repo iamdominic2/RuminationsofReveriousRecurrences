@@ -8,8 +8,7 @@ target = 0
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
-{
+WhenGreenFlagClicked() //The information about the hovered button in combat.
     Battleover? = 1;
     Motion.GoToXY(60, -45);
     Looks.SetSizeTo(75);
