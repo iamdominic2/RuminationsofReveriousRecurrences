@@ -1,4 +1,4 @@
-//The LOCATION where the STAT MENU is outputed itself.
+//The LOCATION where the STAT MENU is outputted itself.
 
 //----- Variables -----------------------------------------------------------------------------------------------------
 
