@@ -149,6 +149,7 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | 35                                 | 80                        | 110 | 95  | 430 |
 ------------------------------------------------------------------------------------
 (Everyone's MP is constant at 10)
+(HP & MP Fully Restores after each fight)
 
 [EXP]:
 
