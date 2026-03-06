@@ -25,6 +25,6 @@
 | Item4   | (RevivalDew)     | 0  | —            | —     | Revives fallen teammates to 100% HP           | —                                          |
 | Item5   | (Ether)          | 0  | —            | —     | User heal 10 MP                               | —                                          |
 | Item6   | (Panacea)        | 0  | —            | —     | User is cured of all bad status               | —                                          |
-| Defend  | (Defend)         | 0  | —            | —     | User gains Defending status (-50% dmg)        | —                                          |
+| Defend  | (Defend)         | 0  | —            | —     | User Defends (-50% dmg & regen 3 MP)          | —                                          |
 
 *:internally round(39.5*10^(-0.4+(HP/MAXHP)*-0.8)+3)
