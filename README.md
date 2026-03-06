@@ -19,3 +19,5 @@ https://iamdominic2.github.io/RuminationsofReveriousRecurrences/
 
 *The file itself is too big, so:
 HTML version (download and load from chrome downloads): https://drive.google.com/file/d/1FTwCSjynBMwCNpUNuljzsW-XsySYcjuD/view?usp=sharing
+
+Note: I only documented post-implementation to ensure full accuracy with the final balanced stats anmd code as I might forget to change things here along the way.
