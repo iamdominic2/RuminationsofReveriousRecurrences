@@ -1,3 +1,5 @@
+//THIS IS ACTAULLY THE SOURCE OF THE DIALOGUE OF THE GAME :)
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
@@ -14,7 +16,7 @@ target = 0
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs lines when necessary, and triggers an encounter at the boss or after walking around enough.
 {
     MAP X = -1344;
     MAP Y = 92;
