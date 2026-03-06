@@ -1,7 +1,7 @@
 # Ruminations of Reverious Recurrences
 A traditional turn-based role playing game where you discover your true identity through venturing through four fields.
 
-Block Count = 7331
+Block Count = 7331 ; Most is in BATTLEENGINE
 
 This is a traditional turn-based RPG, but you heal all HP/MP after each encounter.
 On the field, move with your mouse, WASD, or arrow keys. Press the "i" button to check Items and Status.
