@@ -1,3 +1,5 @@
+//The LOCATION where the STAT MENU is outputed itself.
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
