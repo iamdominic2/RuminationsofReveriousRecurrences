@@ -22,7 +22,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(BENC)
+WhenBroadcastReceived(BENC) //YOU DON'T WANT TO START A BOSS BATTLE WITH STATUS CONDITIONS.
 {
     Call Cure Status(10) nm((1 == 1));
     Call BOSSL;
@@ -37,7 +37,7 @@ WhenBroadcastReceived(ENC)
     {
         Enemy = 1;
     }
-    If ((Character levels[1] + (Character levels[2] + Character levels[3])) > area level[AREA])
+    If ((Character levels[1] + (Character levels[2] + Character levels[3])) > area level[AREA]) //WHERE PLAYER IS POWERFUL ENOUGH FOR TWO ENEMIES
     {
         Enemy No.2 = Operator.Random(Operator.Join(Operator.LetterOf(enc:minmax[AREA], 1), Operator.LetterOf(enc:minmax[AREA], 2)) , Operator.Join(Operator.LetterOf(enc:minmax[AREA], 3), Operator.LetterOf(enc:minmax[AREA], 4)));
     }
@@ -45,7 +45,7 @@ WhenBroadcastReceived(ENC)
     {
         Enemy No.2 = 0;
     }
-    If (((Enemy == 4) Or (Enemy == 9)) Or ((Enemy == 14) Or (Enemy == 20)))
+    If (((Enemy == 4) Or (Enemy == 9)) Or ((Enemy == 14) Or (Enemy == 20))) /BOSS MUSIC
     {
         music state = 3;
     }
@@ -53,7 +53,7 @@ WhenBroadcastReceived(ENC)
     Call start btl;
 }
 
-WhenBroadcastReceived(heal)
+WhenBroadcastReceived(heal) /FULL HP RESTORE, USED OUT OF BATTLE EACH TIME
 {
     attacker = 1;
     Call Heal(99) /10;
@@ -72,7 +72,7 @@ WhenBroadcastReceived(heal)
 
 //----- Custom blocks -------------------------------------------------------------------------------------------------
 
-Define Add Tcalc (string c) (warp=false)
+Define Add Tcalc (string c) (warp=false) //INDIVIDUALLY ADDS EACH BODY'S AGILITY
 {
     If (c == 4)
     {
@@ -93,7 +93,7 @@ Define Add Tcalc (string c) (warp=false)
     }
 }
 
-Define Apply statuses (warp=false)
+Define Apply statuses (warp=false) //STATUS CONDITIONS LIKE POISON, BURN, AND CORRUPTION ARE PROCESSED
 {
     target = attacker;
     If (Character HP[attacker] > 0)
@@ -134,7 +134,7 @@ Define Apply statuses (warp=false)
     }
 }
 
-Define Battle Sim (warp=false)
+Define Battle Sim (warp=false) //CALLS THE NEXT MOVE, BASICALLY.
 {
     Repeat (List.Length(turn calc))
     {
@@ -150,7 +150,7 @@ Define Battle Sim (warp=false)
     List.ReplaceItem(Character/team buffs, 15, 0);
 }
 
-Define BOSSL (warp=false)
+Define BOSSL (warp=false) //STARTS A BOSS ENCOUNTER
 {
     music state = 2;
     If ((AREA == 4) And (Not ((Enemy == 20))))
@@ -170,7 +170,7 @@ Define BOSSL (warp=false)
     Call start btl;
 }
 
-Define Charater Attack w/ power(string x) ignore spikes(string yn) (warp=false)
+Define Charater Attack w/ power(string x) ignore spikes(string yn) (warp=false) //PLAYER ATTACK ENEMY WITH A DAMAGING SKILL OR PHYSICAL ATTACK
 {
     power = x;
     If (Character/team buffs[13] > 0)
@@ -181,7 +181,7 @@ Define Charater Attack w/ power(string x) ignore spikes(string yn) (warp=false)
     TurnOver = 1;
 }
 
-Define Cure Status(string hl) nm(bool boolean) (warp=true)
+Define Cure Status(string hl) nm(bool boolean) (warp=true) //THIS IS CALLED WITH STATUS RECOVERY ITEM OR SKILL.
 {
     Repeat (hl)
     {
@@ -194,7 +194,7 @@ Define Cure Status(string hl) nm(bool boolean) (warp=true)
     }
 }
 
-Define Deal(string x) damage to character(string y) drain(string d) s effect(string s) (warp=false)
+Define Deal(string x) damage to character(string y) drain(string d) s effect(string s) (warp=false) //THIS OCCURS WHEN ENEMY ATTACKS OR THE PLAYER USES A SELF-DAMAGE SKILL.
 {
     Control.Wait(0.1);
     If (Character HP[y] > 0)
@@ -236,7 +236,7 @@ Define Deal(string x) damage to character(string y) drain(string d) s effect(str
     }
 }
 
-Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.spiike(string se) othercause(string c) (warp=false)
+Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.spiike(string se) othercause(string c) (warp=false) //DIRECT DAMAGE, LIKE LYRA'S HOPECUS POCUS
 {
     Event.Broadcast("enemyflash");
     Control.Wait(0);
@@ -299,12 +299,12 @@ Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.sp
     Control.Wait(0.2);
 }
 
-Define Decrease Status(string x) nomsg(bool boolean) (warp=false)
+Define Decrease Status(string x) nomsg(bool boolean) (warp=false) //STATUS DECREASES EACH TURN, THIS IS WHERE IT OCCURS
 {
     Call just minus stauts direction(x)(boolean);
 }
 
-Define End of turn effects (warp=false)
+Define End of turn effects (warp=false) //STATUS CONDITIONS LIKE BURN - TO THE ENEMY SIDE!!! OCCUR.
 {
     If (EnemyHP > 0)
     {
@@ -418,11 +418,11 @@ Define End of turn effects (warp=false)
     List.ReplaceItem(Character/team buffs, 16, 0);
 }
 
-Define Enemy Movement (warp=false)
+Define Enemy Movement (warp=false) //THIS OCCURS WHEN AN ENEMY TAKES A TURN
 {
     lvl = 1;
     power = 0;
-    If ((attacker == 5) And (enemy1killed == 0))
+    If ((attacker == 5) And (enemy1killed == 0)) //MAKE SURE THE CORRECT NAME IS DISPLAYED IN THE TEXT LOG!
     {
         REV ENEMY = Enemy;
         Enemy = Enemy No.2;
@@ -436,7 +436,7 @@ Define Enemy Movement (warp=false)
             Stop(this script);
         }
     }
-    Repeat ((((Enemy > 13) Or ((Enemy > 8) And (Operator.Random(1 , 3) < 3))) + ((Enemy == 20) + 1)))
+    Repeat ((((Enemy > 13) Or ((Enemy > 8) And (Operator.Random(1 , 3) < 3))) + ((Enemy == 20) + 1))) //POSSIBLE DOUBLE SPEED OR GUARNATEED, OTHERWISE SINGLE
     {
         If (Not (((Character HP[3] < 1) And ((Character HP[2] < 1) And (Character HP[1] < 1)))))
         {
@@ -474,7 +474,7 @@ Define Enemy Movement (warp=false)
     Enemy = REV ENEMY;
 }
 
-Define Ex Tx(string number or text) (warp=false)
+Define Ex Tx(string number or text) (warp=false) //WHEN AT THE END OF A BATTLE, EACH GAINS EXPERIENCE!! THIS IS THE TEXT ONLY
 {
     If (Character HP[number or text] > 0)
     {
@@ -491,7 +491,7 @@ Define Ex Tx(string number or text) (warp=false)
     }
 }
 
-Define Gain EXP(string n) (warp=false)
+Define Gain EXP(string n) (warp=false)  //WHEN AT THE END OF A BATTLE, EACH GAINS EXPERIENCE!! THIS IS THE WHOLE SCRIPT
 {
     If (Character HP[n] > 0)
     {
@@ -542,7 +542,7 @@ Define Gain EXP(string n) (warp=false)
     }
 }
 
-Define Gain Status(string s) turns(string t) nomsg(string message) (warp=true)
+Define Gain Status(string s) turns(string t) nomsg(string message) (warp=true) //WHEN A STATUS CONDITION (POSITIVE OR NEGATIVE) THIS OCCURS.
 {
     If ((Character HP[attacker] > 0) And (Not ((Operator.LetterOf(Character Status[attacker], s) == t))))
     {
@@ -568,7 +568,7 @@ Define Gain Status(string s) turns(string t) nomsg(string message) (warp=true)
     }
 }
 
-Define Heal(string hp) /10 (warp=false)
+Define Heal(string hp) /10 (warp=false) //HEAL A CAHRACTER OUT OF A PROPORTION OF 10.
 {
     If (Character HP[attacker] > 0)
     {
@@ -593,7 +593,7 @@ Define Heal(string hp) /10 (warp=false)
     }
 }
 
-Define IntSpecSelectMenu (warp=true)
+Define IntSpecSelectMenu (warp=true) //UNUSED, EARLY BUILD
 {
     List.DeleteAll(Items);
     If (attacker == 1)
@@ -620,7 +620,7 @@ Define IntSpecSelectMenu (warp=true)
     List.Show(Items);
 }
 
-Define just minus stauts direction(string xx)(bool boolean) (warp=true)
+Define just minus stauts direction(string xx)(bool boolean) (warp=true) //A FAST WAY TO REDUCE STATUS DURATIONS
 {
     If (Operator.LetterOf(Character Status[attacker], xx) > 0)
     {
@@ -635,7 +635,7 @@ Define just minus stauts direction(string xx)(bool boolean) (warp=true)
     }
 }
 
-Define Mon Attack target(string t) w/ pwr(string pwr) status(string s)(string s2) turns(string n) s-effect(string m) drain(string x) (warp=false)
+Define Mon Attack target(string t) w/ pwr(string pwr) status(string s)(string s2) turns(string n) s-effect(string m) drain(string x) (warp=false) //MONSTER ATTACKS A SINGLE PERSON AND COULD INFLICT A STATUS EFFECT.
 {
     target = t;
     attack = Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 1), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 2)), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 3));
@@ -692,7 +692,7 @@ Define Mon Attack target(string t) w/ pwr(string pwr) status(string s)(string s2
     Control.Wait(0.25);
 }
 
-Define Monster Normal Attack (warp=false)
+Define Monster Normal Attack (warp=false) //THE COUNTERPART TO A PLAYER'S NORMAL ATTACK. SIMILAR.
 {
     If (Character HP[target] < 1)
     {
@@ -758,7 +758,7 @@ Define Monster Normal Attack (warp=false)
     }
 }
 
-Define Monster  Special (warp=false)
+Define Monster  Special (warp=false) //MONSTERS' SKILLS IN ACTION.
 {
     If (Enemy == 20)
     {
