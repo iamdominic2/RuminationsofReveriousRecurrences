@@ -6,7 +6,7 @@ F = 0.01
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //follow 5 frames behind protagonist
 {
     Looks.SetSizeTo(25);
     Forever
@@ -22,7 +22,7 @@ WhenGreenFlagClicked()
     }
 }
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //only if area is 2 or above since drayden joins
 {
     Forever
     {
@@ -50,7 +50,7 @@ WhenGreenFlagClicked()
 
 //----- Custom blocks -------------------------------------------------------------------------------------------------
 
-Define FOUT (warp=true)
+Define FOUT (warp=true) //method to shift out of wall
 {
     Looks.SetSizeTo(1);
     F = 1;
