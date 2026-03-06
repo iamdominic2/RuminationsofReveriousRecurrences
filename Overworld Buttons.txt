@@ -1,3 +1,5 @@
+//Basically, the STATUS screen.
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
@@ -49,7 +51,7 @@ WhenGreenFlagClicked()
 
 //----- Sprite clicked events -----------------------------------------------------------------------------------------
 
-WhenThisSpriteClicked()
+WhenThisSpriteClicked() //OPEN STATUS SCREEN.
 {
     If (Not ((story despite battle == 1)))
     {
@@ -72,7 +74,7 @@ WhenBroadcastReceived(End)
 
 //----- Start as clone ------------------------------------------------------------------------------------------------
 
-Control.WhenIStartAsClone()
+Control.WhenIStartAsClone() 
 {
     Forever
     {
@@ -125,7 +127,7 @@ Control.WhenIStartAsClone()
 
 //----- Custom blocks -------------------------------------------------------------------------------------------------
 
-Define MENU (warp=false)
+Define MENU (warp=false) //RENDER MENU.
 {
     List.DeleteAll(A Message Log);
     If (Motion.XPosition() < -221)
