@@ -6,7 +6,7 @@ costt = 0
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //setup clones
 {
     List.DeleteAll(flags);
     Looks.SetSizeTo(50);
@@ -29,7 +29,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(animation)
+WhenBroadcastReceived(animation) //blinking animation
 {
     If ((4 - Costume.GetNumberName(number)) == Sensing.Of(target, Battle))
     {
@@ -52,7 +52,7 @@ WhenBroadcastReceived(animation)
 
 //----- Start as clone ------------------------------------------------------------------------------------------------
 
-Control.WhenIStartAsClone()
+Control.WhenIStartAsClone() //also applies like the above
 {
     costt = Costume.GetNumberName(number);
     Forever
