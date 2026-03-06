@@ -1,3 +1,5 @@
+//THIS IS NOT THE ACTAUL ENEMY FIGHT CODE, IT'S IN BATTLE ENGINE.
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
@@ -19,7 +21,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(BENC)
+WhenBroadcastReceived(BENC) //BOSSES ARE BIG AND COOL. MAKE THEM APPEAR THAT WAY.
 {
     Control.Wait(1);
     Looks.SwitchCostumeTo(Enemy);
@@ -55,7 +57,7 @@ WhenBroadcastReceived(BENC)
     }
 }
 
-WhenBroadcastReceived(ENC)
+WhenBroadcastReceived(ENC) //REGULAR ENCOUNTER, CLEAR GRAPHIC EFFECTS AND APPEAR NORMALLY.
 {
     Control.Wait(1);
     Looks.SwitchCostumeTo(Enemy);
@@ -98,7 +100,7 @@ WhenBroadcastReceived(ENC)
     }
 }
 
-WhenBroadcastReceived(revealfinalboss2nd)
+WhenBroadcastReceived(revealfinalboss2nd) //COOL FINAL BOSS TRANSFORMATION, CHANGES SEVERAL FRAMES TO REVEAL BODY PARTS.
 {
     Stop(other scripts in sprite);
     Sound.Play(die2);
@@ -160,11 +162,6 @@ WhenBroadcastReceived(revealfinalboss2nd)
         enemy1killed = 0;
     }
 }
-
-
-//----- Orphaned blocks -----------------------------------------------------------------------------------------------
-
-Looks.SwitchCostumeTo(Enemy);
 
 
 //----- Costumes ------------------------------------------------------------------------------------------------------
