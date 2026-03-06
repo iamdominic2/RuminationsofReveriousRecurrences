@@ -1,3 +1,5 @@
+//Images for status conditions.
+
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
 WhenGreenFlagClicked()
@@ -54,7 +56,7 @@ Control.WhenIStartAsClone()
 
 //----- Custom blocks -------------------------------------------------------------------------------------------------
 
-Define Character/Team Status No.(string Number) Costume Name(string Name) (warp=false)
+Define Character/Team Status No.(string Number) Costume Name(string Name) (warp=false) //This is for the enemy, ironically.
 {
     Looks.SetEffectTo(GHOST, 0);
     If (Character/team buffs[Number] > 0)
@@ -88,7 +90,7 @@ Define Character/Team Status No.(string Number) Costume Name(string Name) (warp=
     }
 }
 
-Define Clone Status(string c) (warp=true)
+Define Clone Status(string c) (warp=true) //Clone single-target statuses
 {
     If (Character HP[c] > 0)
     {
