@@ -1,4 +1,4 @@
-# RuminationsofReveriousRecurrences
+# Ruminations of Reverious Recurrences
 A traditional turn-based rpg where you discover your true identity through venturing through four fields.
 
 Block Count = 7331
