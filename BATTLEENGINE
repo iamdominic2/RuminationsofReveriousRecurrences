@@ -1,0 +1,2231 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+attacker = 1
+counter t = 1
+para'd = 0
+target = 2
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    music state = 1;
+}
+
+WhenGreenFlagClicked()
+{
+    attacker = 1;
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(BENC)
+{
+    Call Cure Status(10) nm((1 == 1));
+    Call BOSSL;
+}
+
+WhenBroadcastReceived(ENC)
+{
+    music state = 2;
+    Enemy = Operator.Random(Operator.Join(Operator.LetterOf(enc:minmax[AREA], 1), Operator.LetterOf(enc:minmax[AREA], 2)) , Operator.Join(Operator.LetterOf(enc:minmax[AREA], 3), Operator.LetterOf(enc:minmax[AREA], 4)));
+    Call Cure Status(10) nm((1 == 1));
+    If (Character levels[1] < 2)
+    {
+        Enemy = 1;
+    }
+    If ((Character levels[1] + (Character levels[2] + Character levels[3])) > area level[AREA])
+    {
+        Enemy No.2 = Operator.Random(Operator.Join(Operator.LetterOf(enc:minmax[AREA], 1), Operator.LetterOf(enc:minmax[AREA], 2)) , Operator.Join(Operator.LetterOf(enc:minmax[AREA], 3), Operator.LetterOf(enc:minmax[AREA], 4)));
+    }
+    Else
+    {
+        Enemy No.2 = 0;
+    }
+    If (((Enemy == 4) Or (Enemy == 9)) Or ((Enemy == 14) Or (Enemy == 20)))
+    {
+        music state = 3;
+    }
+    Sound.StopAllSounds();
+    Call start btl;
+}
+
+WhenBroadcastReceived(heal)
+{
+    attacker = 1;
+    Call Heal(99) /10;
+    If (Backdrop.GetNumberName(number) > 1)
+    {
+        attacker = 2;
+        Call Heal(99) /10;
+        If (Backdrop.GetNumberName(number) > 2)
+        {
+            attacker = 3;
+            Call Heal(99) /10;
+        }
+    }
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Add Tcalc (string c) (warp=false)
+{
+    If (c == 4)
+    {
+        List.Add(turn calc, (Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 6), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 7), "")) / (((Character/team buffs[6] > 0) * 3) + 1)));
+        List.Add(turn order, c);
+        Stop(this script);
+    }
+    If (c == 5)
+    {
+        List.Add(turn calc, Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 6), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 7), "")));
+        List.Add(turn order, c);
+        Stop(this script);
+    }
+    If (Not ((Operator.Join(Character HP[c], "A") == "-0A")))
+    {
+        List.Add(turn calc, (Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[c], 7), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[c], 8), Operator.LetterOf(Character Stats AAADDDSSS[c], 9))) / (((Operator.LetterOf(Character Status[c], 8) > 0) * 3) + 1)));
+        List.Add(turn order, c);
+    }
+}
+
+Define Apply statuses (warp=false)
+{
+    target = attacker;
+    If (Character HP[attacker] > 0)
+    {
+        Call Decrease Status(1) nomsg();
+        If (Operator.LetterOf(Character Status[attacker], 2) > 0)
+        {
+            Call Deal(Operator.Round((Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 1), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 2)), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 3)) * 0.25))) damage to character(target) drain("") s effect(18);
+            animation = "p";
+            Event.Broadcast("animation");
+            Control.Wait(0.15);
+        }
+        Call Decrease Status(2) nomsg();
+        Call Decrease Status(8) nomsg();
+        If (Operator.LetterOf(Character Status[attacker], 11) > 0)
+        {
+            Call Deal(Operator.Round((Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 1), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 2)), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 3)) * 0.15))) damage to character(target) drain("") s effect(20);
+            animation = "f";
+            Event.Broadcast("animation");
+            Control.Wait(0.15);
+        }
+        Call Decrease Status(11) nomsg();
+        If (Operator.LetterOf(Character Status[attacker], 12) > 0)
+        {
+            If (EnemyHP > 0)
+            {
+                Call Deal((Character levels[attacker] + zAdditional HP characters (*10)[attacker])) damage to character(target) drain(1) s effect(14);
+            }
+            animation = "d";
+            Event.Broadcast("animation");
+            Control.Wait(0.15);
+        }
+        Call Decrease Status(12) nomsg();
+    }
+    Else
+    {
+        Call just minus stauts direction(9)();
+    }
+}
+
+Define Battle Sim (warp=false)
+{
+    Repeat (List.Length(turn calc))
+    {
+        Call Turn Order Sort;
+        List.DeleteAll(Items);
+        If (Battleover? == 0)
+        {
+            Wait Until (story despite battle == 0);
+            Call Next Move;
+            Control.Wait(0.05);
+        }
+    }
+    List.ReplaceItem(Character/team buffs, 15, 0);
+}
+
+Define BOSSL (warp=false)
+{
+    music state = 2;
+    If ((AREA == 4) And (Not ((Enemy == 20))))
+    {
+        Enemy = 21;
+    }
+    Else
+    {
+        Enemy = (Operator.Join(Operator.LetterOf(enc:minmax[AREA], 3), Operator.LetterOf(enc:minmax[AREA], 4)) + 1);
+    }
+    Enemy No.2 = 0;
+    If (((Enemy == 4) Or (Enemy == 9)) Or ((Enemy == 14) Or (Enemy == 21)))
+    {
+        music state = 3;
+    }
+    Sound.StopAllSounds();
+    Call start btl;
+}
+
+Define Charater Attack w/ power(string x) ignore spikes(string yn) (warp=false)
+{
+    power = x;
+    If (Character/team buffs[13] > 0)
+    {
+        power = (x * 0.6);
+    }
+    Call Deal(Operator.Round((Operator.Round((((attack + (lvl - 1)) / e ^((def * 0.009))) * (Operator.Random(0.15 , 0.175) * power))) * (((0.003 * (lvl * lvl)) + (-0.029 * lvl)) + 1.11)))) damage to enemy, critrate(((x == 7) And (attacker == 3))) drain(((x == 4) And (attacker == 1))) ign.spiike(yn) othercause("D");
+    TurnOver = 1;
+}
+
+Define Cure Status(string hl) nm(bool boolean) (warp=true)
+{
+    Repeat (hl)
+    {
+        Call Decrease Status(1) nomsg(boolean);
+        Call Decrease Status(2) nomsg(boolean);
+        Call Decrease Status(8) nomsg(boolean);
+        Call Decrease Status(11) nomsg(boolean);
+        Call Decrease Status(12) nomsg(boolean);
+        Call Decrease Status(13) nomsg(boolean);
+    }
+}
+
+Define Deal(string x) damage to character(string y) drain(string d) s effect(string s) (warp=false)
+{
+    Control.Wait(0.1);
+    If (Character HP[y] > 0)
+    {
+        List.Hide(Items);
+        Sound.Play(s);
+        List.ReplaceItem(Character HP, y, (Character HP[y] - x));
+        List.Add(A Message Log, Operator.Join(Character Names[y], Operator.Join(Operator.Join(" took ", x), " damage!! ")));
+        List.Add(damage number text, x);
+        List.Add(damage number x, cx[target]);
+        List.Add(damage number color, 98);
+        If (d > 0)
+        {
+            EnemyHP += floor((d * x));
+            List.Add(A Message Log, Operator.Join(Operator.Join("It drained ", floor((d * x))), " HP!"));
+            If (enemy1killed == 1)
+            {
+                List.Add(damage number color, 177);
+                List.Add(damage number text, floor((d * x)));
+                List.Add(damage number x, 165);
+            }
+            Else
+            {
+                List.Add(damage number color, 177);
+                List.Add(damage number text, floor((d * x)));
+                List.Add(damage number x, 90);
+            }
+            Control.Wait(0.1);
+        }
+        If (Character HP[y] < 1)
+        {
+            Sound.Play(die2);
+            List.Add(A Message Log, Operator.Join(Character Names[y], " is dead!!"));
+            List.Add(flags, "diethart");
+            Control.Wait(0.5);
+            Call Pause("");
+            List.DeleteAll(A Message Log);
+        }
+    }
+}
+
+Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.spiike(string se) othercause(string c) (warp=false)
+{
+    Event.Broadcast("enemyflash");
+    Control.Wait(0);
+    If ((Operator.Random(0 , 500) < (Operator.Join(Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[attacker], 7), Operator.LetterOf(Character Stats AAADDDSSS[attacker], 8)), Operator.LetterOf(Character Stats AAADDDSSS[attacker], 9)) * (y + 1))) Or ((attacker == 2) And (Character/team buffs[5] > 0)))
+    {
+        List.Add(A Message Log, "A critical hit!!!");
+        List.Add(A Message Log, Operator.Join(c, Operator.Join(Operator.Join(Operator.Join(Operator.Join("oes ", floor((1.8 * x))), " damage to "), Sensing.Of(costume name, Enemy)), "!")));
+        Sound.Play(crit);
+        EnemyHP += ceiling((-1.8 * x));
+        If (1 == 1)
+        {
+            Call Heal(((x / (Character levels[attacker] + zAdditional HP characters (*10)[attacker])) * (5 / 9))) /10;
+        }
+        If (enemy1killed == 1)
+        {
+            List.Add(damage number color, 114);
+            List.Add(damage number text, floor((1.8 * x)));
+            List.Add(damage number x, 165);
+        }
+        Else
+        {
+            List.Add(damage number color, 114);
+            List.Add(damage number text, floor((1.8 * x)));
+            List.Add(damage number x, 90);
+        }
+    }
+    Else
+    {
+        List.Add(A Message Log, Operator.Join(c, Operator.Join(Operator.Join(Operator.Join(Operator.Join("oes ", floor((1 * x))), " damage to "), Sensing.Of(costume name, Enemy)), "!")));
+        Sound.Play(attack);
+        EnemyHP += (-1 * x);
+        If (1 == 1)
+        {
+            Call Heal(((x / (Character levels[attacker] + zAdditional HP characters (*10)[attacker])) / 3)) /10;
+        }
+        If (enemy1killed == 1)
+        {
+            List.Add(damage number color, 98);
+            List.Add(damage number text, floor((1 * x)));
+            List.Add(damage number x, 165);
+        }
+        Else
+        {
+            List.Add(damage number color, 98);
+            List.Add(damage number text, floor((1 * x)));
+            List.Add(damage number x, 90);
+        }
+    }
+    If (EnemyHP < 1)
+    {
+    }
+    Else
+    {
+        If ((Character/team buffs[14] > 0) And (se < 1))
+        {
+            target = attacker;
+            Call Deal(20) damage to character(attacker) drain("") s effect(24);
+        }
+    }
+    Control.Wait(0.2);
+}
+
+Define Decrease Status(string x) nomsg(bool boolean) (warp=false)
+{
+    Call just minus stauts direction(x)(boolean);
+}
+
+Define End of turn effects (warp=false)
+{
+    If (EnemyHP > 0)
+    {
+        attacker = 1;
+        Call Apply statuses;
+        attacker = 2;
+        Call Apply statuses;
+        attacker = 3;
+        Call Apply statuses;
+        Call Reduce team effect turn counter: effect(1);
+        If ((trigger effect? == 1) And ((Character MP[1] + (Character MP[2] + Character MP[3])) < 30))
+        {
+            List.ReplaceItem(Character MP, 1, (Character MP[1] + 1));
+            If (Character MP[1] > 10)
+            {
+                List.ReplaceItem(Character MP, 1, 10);
+            }
+            Else
+            {
+                Sound.Play(Level Up);
+                List.Add(damage number text, 1);
+                List.Add(damage number x, cx[1]);
+                List.Add(damage number color, "");
+                Control.Wait(0.1);
+            }
+            List.ReplaceItem(Character MP, 2, (Character MP[2] + 1));
+            If (Character MP[2] > 10)
+            {
+                List.ReplaceItem(Character MP, 2, 10);
+            }
+            Else
+            {
+                Sound.Play(Level Up);
+                List.Add(damage number text, 1);
+                List.Add(damage number x, cx[2]);
+                List.Add(damage number color, "");
+                Control.Wait(0.1);
+            }
+            List.ReplaceItem(Character MP, 3, (Character MP[3] + 1));
+            If (Character MP[3] > 10)
+            {
+                List.ReplaceItem(Character MP, 3, 10);
+            }
+            Else
+            {
+                Sound.Play(Level Up);
+                List.Add(damage number text, 1);
+                List.Add(damage number x, cx[3]);
+                List.Add(damage number color, "");
+                Control.Wait(0.1);
+            }
+        }
+        Call Reduce team effect turn counter: effect(2);
+        If (trigger effect? == 1)
+        {
+            attack = Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[1], 1), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[1], 2), Operator.LetterOf(Character Stats AAADDDSSS[1], 3)));
+            lvl = Character levels[1];
+            animation = "p";
+            Event.Broadcast("animation2");
+            Call Deal(Operator.Round((((attack + (lvl - 1)) * 0.45) + (EnemyHP * 0.035)))) damage to enemy, critrate(-1) drain("") ign.spiike(1) othercause("Toxins d");
+            Control.Wait(0.12);
+        }
+        Call Reduce team effect turn counter: effect(5);
+        Call Reduce team effect turn counter: effect(6);
+        Call Reduce team effect turn counter: effect(8);
+        If (trigger effect? == 1)
+        {
+            attack = Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[2], 1), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[2], 2), Operator.LetterOf(Character Stats AAADDDSSS[2], 3)));
+            lvl = Character levels[2];
+            animation = "f";
+            Event.Broadcast("animation2");
+            Call Deal(Operator.Round((((attack + (lvl - 1)) * 0.3) + (EnemyHP * 0.025)))) damage to enemy, critrate(-1) drain("") ign.spiike(1) othercause("Burn d");
+            Control.Wait(0.12);
+        }
+        Call Reduce team effect turn counter: effect(9);
+        If (trigger effect? == 1)
+        {
+            If ((Backdrop.GetNumberName(number) > 2) Or (Enemy == 9))
+            {
+                attacker = 1;
+                Call Heal(1.2) /10;
+                attacker = 2;
+                Call Heal(1.2) /10;
+                attacker = 3;
+                Call Heal(1.2) /10;
+            }
+            Else
+            {
+                If (Backdrop.GetNumberName(number) == 1)
+                {
+                    attacker = 1;
+                    Call Heal(1.2) /10;
+                }
+                Else
+                {
+                    attacker = 1;
+                    Call Heal(1.2) /10;
+                    attacker = 2;
+                    Call Heal(1.2) /10;
+                }
+            }
+            Control.Wait(0.2);
+        }
+        Call Reduce team effect turn counter: effect(10);
+        Call Reduce team effect turn counter: effect(11);
+        Call Reduce team effect turn counter: effect(12);
+        Call Reduce team effect turn counter: effect(13);
+        Call Reduce team effect turn counter: effect(14);
+        Control.Wait(0.25);
+    }
+    List.ReplaceItem(Character/team buffs, 16, 0);
+}
+
+Define Enemy Movement (warp=false)
+{
+    lvl = 1;
+    power = 0;
+    If ((attacker == 5) And (enemy1killed == 0))
+    {
+        REV ENEMY = Enemy;
+        Enemy = Enemy No.2;
+    }
+    Else
+    {
+        REV ENEMY = Enemy;
+        If (attacker == 5)
+        {
+            TurnOver = 1;
+            Stop(this script);
+        }
+    }
+    Repeat ((((Enemy > 13) Or ((Enemy > 8) And (Operator.Random(1 , 3) < 3))) + ((Enemy == 20) + 1)))
+    {
+        If (Not (((Character HP[3] < 1) And ((Character HP[2] < 1) And (Character HP[1] < 1)))))
+        {
+            If ((power == 0) Or (Operator.Random(1 , 2) == 1))
+            {
+                target = 0;
+            }
+            If (Character/team buffs[3] == 1)
+            {
+                target = 1;
+            }
+            Sensing.ResetTimer();
+            Repeat Until ((Character HP[target] > 0) Or (Sensing.Timer() > 0.2))
+            {
+                target = Operator.Random(1 , 3);
+            }
+            If (Operator.Random(1 , 5) < (3 + (Enemy > 8)))
+            {
+                Call Monster  Special;
+            }
+            Else
+            {
+                Call Monster Normal Attack;
+            }
+            TurnOver = 0.5;
+            Control.Wait(0.27);
+        }
+        Else
+        {
+            Stop(this script);
+        }
+    }
+    Call Reduce team effect turn counter: effect(3);
+    TurnOver = 1;
+    Enemy = REV ENEMY;
+}
+
+Define Ex Tx(string number or text) (warp=false)
+{
+    If (Character HP[number or text] > 0)
+    {
+        If (Character exp[number or text] < exp cap[(AREA + (music state - 2))])
+        {
+            List.Add(A Message Log, Operator.Join(Operator.Join(Character Names[number or text], " gained "), Operator.Join(ceiling(togainexp), " experience points.")));
+        }
+        Else
+        {
+            List.Add(A Message Log, Operator.Join(Operator.Join(Character Names[number or text], " didn't gain"), Operator.Join("", " experience points.")));
+        }
+        Control.Wait(0);
+        Control.Wait(0);
+    }
+}
+
+Define Gain EXP(string n) (warp=false)
+{
+    If (Character HP[n] > 0)
+    {
+        If (Character exp[n] < exp cap[(AREA + (music state - 2))])
+        {
+            Repeat (1)
+            {
+                List.ReplaceItem(Character exp, n, (togainexp + Character exp[n]));
+                Repeat Until (((Character exp[n] - Exp Table[(Character levels[n] - 1)]) / (Exp Table[Character levels[n]] - Exp Table[(Character levels[n] - 1)])) < 0.9999)
+                {
+                    Control.Wait(0.25);
+                    Sound.Play(1-10);
+                    List.ReplaceItem(Character levels, n, (Character levels[n] + 1));
+                    List.ReplaceItem(Character HP, n, (Character HP[n] + 10));
+                    List.ReplaceItem(Character BuffPts TTTS, n, Operator.Join((Operator.Join(Operator.Join(Operator.LetterOf(Character BuffPts TTTS[n], 1), Operator.LetterOf(Character BuffPts TTTS[n], 2)), Operator.LetterOf(Character BuffPts TTTS[n], 3)) + 4), 1));
+                    Repeat Until (Variable.Length(Character BuffPts TTTS[n]) == 4)
+                    {
+                        List.ReplaceItem(Character BuffPts TTTS, n, Operator.Join(0, Character BuffPts TTTS[n]));
+                    }
+                    List.DeleteAll(A Message Log);
+                    If ((Character levels[n] == (List.IndexOf(Exp Table, exp cap[AREA]) + 1)) And (Not (List.ContainsItem(boss flags, Enemy))))
+                    {
+                        List.Add(A Message Log, Operator.Join(Character Names[n], Operator.Join(Operator.Join(" reached level ", Character levels[n]), ", the cap for this area!")));
+                    }
+                    Else
+                    {
+                        List.Add(A Message Log, Operator.Join(Character Names[n], Operator.Join(Operator.Join(" reached level ", Character levels[n]), " !")));
+                    }
+                    Control.Wait(0.1);
+                    List.ReplaceItem(Character Stats AAADDDSSS, n, character stat tables[(Character levels[n] + ((n - 1) * 35))]);
+                    List.Add(A Message Log, Operator.Join(Operator.Join("MAX HP +10 ATK +", Operator.Join((Operator.Join(Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[n], 1), Operator.LetterOf(Character Stats AAADDDSSS[n], 2)), Operator.LetterOf(Character Stats AAADDDSSS[n], 3)) - Operator.Join(Operator.Join(Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 1), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 2)), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 3))), "")), Operator.Join(Operator.Join(" DEF +", Operator.Join((Operator.Join(Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[n], 4), Operator.LetterOf(Character Stats AAADDDSSS[n], 5)), Operator.LetterOf(Character Stats AAADDDSSS[n], 6)) - Operator.Join(Operator.Join(Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 4), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 5)), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 6))), "")), Operator.Join(" AGI +", Operator.Join((Operator.Join(Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[n], 7), Operator.LetterOf(Character Stats AAADDDSSS[n], 8)), Operator.LetterOf(Character Stats AAADDDSSS[n], 9)) - Operator.Join(Operator.Join(Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 7), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 8)), Operator.LetterOf(character stat tables[((Character levels[n] + ((n - 1) * 35)) - 1)], 9))), "")))));
+                    If List.ContainsItem(Character Skill Learn, Character levels[n])
+                    {
+                        If (ceiling((List.IndexOf(Character Skill Learn, Character levels[n]) / 6)) == n)
+                        {
+                            List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Character Names[n], " learned "), Character Special[List.IndexOf(Character Skill Learn, Character levels[n])]), "!"));
+                        }
+                    }
+                    Control.Wait(2);
+                }
+            }
+            List.ReplaceItem(Character exp, n, Operator.Round(Character exp[n]));
+            Control.Wait(0.1);
+        }
+        Else
+        {
+        }
+    }
+}
+
+Define Gain Status(string s) turns(string t) nomsg(string message) (warp=true)
+{
+    If ((Character HP[attacker] > 0) And (Not ((Operator.LetterOf(Character Status[attacker], s) == t))))
+    {
+        s string = "";
+        c91 = 0;
+        Repeat (13)
+        {
+            c91 += 1;
+            If (c91 == s)
+            {
+                s string = Operator.Join(s string, t);
+            }
+            Else
+            {
+                s string = Operator.Join(s string, Operator.LetterOf(Character Status[attacker], c91));
+            }
+        }
+        If (Not ((message == 1)))
+        {
+            List.Add(A Message Log, Operator.Join(Operator.Join(Character Names[attacker], " gained "), Operator.Join(status order[s], " status.")));
+        }
+        List.ReplaceItem(Character Status, attacker, s string);
+    }
+}
+
+Define Heal(string hp) /10 (warp=false)
+{
+    If (Character HP[attacker] > 0)
+    {
+        Sound.Play(heal);
+        List.Add(A Message Log, Operator.Join(Character Names[attacker], Operator.Join(Operator.Join(" healed ", (Operator.Round(((Character levels[attacker] + zAdditional HP characters (*10)[attacker]) * hp)) * 1)), " HP!")));
+        List.ReplaceItem(Character HP, attacker, (Character HP[attacker] + Operator.Round(((Character levels[attacker] + zAdditional HP characters (*10)[attacker]) * hp))));
+        If (Character HP[attacker] > (10 * (Character levels[attacker] + zAdditional HP characters (*10)[attacker])))
+        {
+            List.ReplaceItem(Character HP, attacker, (10 * (Character levels[attacker] + zAdditional HP characters (*10)[attacker])));
+        }
+        TurnOver = 1;
+        If (animation == "A1")
+        {
+            target = attacker;
+            Event.Broadcast("animation");
+            animation = "A1";
+        }
+        List.Add(damage number text, Operator.Round(((Character levels[attacker] + zAdditional HP characters (*10)[attacker]) * hp)));
+        List.Add(damage number x, cx[attacker]);
+        List.Add(damage number color, 166);
+        Control.Wait(0);
+    }
+}
+
+Define IntSpecSelectMenu (warp=true)
+{
+    List.DeleteAll(Items);
+    If (attacker == 1)
+    {
+        c73 = 0;
+    }
+    Else
+    {
+        If (attacker == 2)
+        {
+            c73 = 6;
+        }
+        Else
+        {
+            c73 = 12;
+        }
+    }
+    Repeat (6)
+    {
+        c73 += 1;
+        List.Add(Items, Operator.Join(Character Special[c73], Operator.Join(" (", Operator.Join(MP Cost[c73], ")"))));
+    }
+    List.Add(Items, Operator.Join("Energy: ", Character MP[attacker]));
+    List.Show(Items);
+}
+
+Define just minus stauts direction(string xx)(bool boolean) (warp=true)
+{
+    If (Operator.LetterOf(Character Status[attacker], xx) > 0)
+    {
+        s string = "";
+        c91 = 0;
+        Repeat (13)
+        {
+            c91 += 1;
+            s string = Operator.Join(s string, (Operator.LetterOf(Character Status[attacker], c91) - (c91 == xx)));
+        }
+        List.ReplaceItem(Character Status, attacker, s string);
+    }
+}
+
+Define Mon Attack target(string t) w/ pwr(string pwr) status(string s)(string s2) turns(string n) s-effect(string m) drain(string x) (warp=false)
+{
+    target = t;
+    attack = Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 1), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 2)), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 3));
+    def = Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[target], 4), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[target], 5), Operator.LetterOf(Character Stats AAADDDSSS[target], 6)));
+    If ((target == 2) And ((Character/team buffs[7] > 0) Or (Operator.LetterOf(Character Status[target], 2) > 0)))
+    {
+        If (Not ((Enemy No.2 > 0)))
+        {
+            attack = (attack * 1.3);
+        }
+    }
+    If (Operator.LetterOf(Character Status[target], 4) > 0)
+    {
+        attack = (attack * 0.6);
+    }
+    If (Operator.LetterOf(Character Status[target], 7) > 0)
+    {
+        attack = (attack * 0.5);
+    }
+    If (Character/team buffs[4] > 0)
+    {
+        attack = (attack * 0.7);
+    }
+    If (Character/team buffs[7] > 0)
+    {
+        attack = (attack * 0.8);
+        Call Reduce team effect turn counter: effect(7);
+    }
+    power = pwr;
+    Call Deal(Operator.Round(((attack / e ^((def * 0.00625))) * (Operator.Random(0.18 , 0.2) * power)))) damage to character(target) drain(x) s effect(m);
+    attacker = t;
+    If (s > 0)
+    {
+        If (s == 13)
+        {
+            Call Stun(attacker) prob(0.18);
+        }
+        Else
+        {
+            Call Gain Status(s) turns(n) nomsg("");
+        }
+    }
+    If (s2 > 0)
+    {
+        If (s2 == 13)
+        {
+            Call Stun(attacker) prob(0.16);
+        }
+        Else
+        {
+            Call Gain Status(s2) turns(n) nomsg("");
+        }
+    }
+    Control.Wait(0.25);
+}
+
+Define Monster Normal Attack (warp=false)
+{
+    If (Character HP[target] < 1)
+    {
+        target = 1;
+    }
+    If (attacker == 5)
+    {
+        List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy2), " attacks!"));
+    }
+    Else
+    {
+        If (enemy1killed == 1)
+        {
+            List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy2), " attacks!"));
+        }
+        Else
+        {
+            List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), " attacks!"));
+        }
+    }
+    If (Enemy == 20)
+    {
+        Sound.Play(rankup.mp3);
+        Control.Wait(0.1);
+    }
+    If (Enemy == 21)
+    {
+        Sound.Play(Earthquake1);
+    }
+    If (Not ((A Message Log[List.Length(A Message Log)] == "  attacks!")))
+    {
+        If (attacker == 5)
+        {
+            animation = Operator.Join(Enemy No.2, 0);
+            Event.Broadcast("animation");
+        }
+        Else
+        {
+            animation = Operator.Join(Enemy, 0);
+            Event.Broadcast("animation");
+        }
+        Call Mon Attack target(target) w/ pwr(5) status("")("") turns("") s-effect(3) drain("");
+        If ((Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[(animation / 10)], 16) > 0) And (Operator.Random(1 , 5) < 3))
+        {
+            If (Character MP[target] > 0)
+            {
+                Sound.Play(mpthief);
+                List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Character Names[target], " is drained of "), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[(animation / 10)], 16)), " MP!"));
+                List.ReplaceItem(Character MP, target, (Character MP[target] - Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[(animation / 10)], 16)));
+                List.Add(damage number x, cx[target]);
+                List.Add(damage number text, Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[(animation / 10)], 16));
+                List.Add(damage number color, 63);
+                If (Character MP[target] < 0)
+                {
+                    List.ReplaceItem(Character MP, target, 0);
+                }
+            }
+        }
+    }
+    Else
+    {
+        List.DeleteItem(A Message Log, List.Length(A Message Log));
+    }
+}
+
+Define Monster  Special (warp=false)
+{
+    If (Enemy == 20)
+    {
+        If (TurnOver == 0.5)
+        {
+            If (Operator.Random(1 , 3) == 1)
+            {
+                List.Add(A Message Log, Operator.Join("Spectral Overlord", " syphons your team's souls!"));
+                Call Mon whole team w/ pwr(3) status(12)("") turn(3) s-effect(17);
+                target = Operator.Random(1 , 3);
+            }
+            Else
+            {
+                If (Operator.Random(1 , 2) == 1)
+                {
+                    List.Add(A Message Log, Operator.Join("Spectral Overlord", " ruins your team's mortals!"));
+                    Call Mon whole team w/ pwr(4) status(1)(8) turn(3) s-effect(50);
+                    target = Operator.Random(1 , 3);
+                }
+                Else
+                {
+                    List.Add(A Message Log, Operator.Join("Spectral Overlord", " unleases its"));
+                    List.Add(A Message Log, Operator.Join("noxious burning hands on ", Operator.Join(Character Names[target], "!!")));
+                    animation = 202;
+                    Event.Broadcast("animation");
+                    Sound.Play(Fireball1);
+                    Call Mon Attack target(target) w/ pwr(3.5) status(2)(11) turns(4) s-effect(19) drain("");
+                }
+            }
+        }
+        Else
+        {
+            Call Monster Normal Attack;
+        }
+    }
+    Else
+    {
+        If (Character HP[target] > 0)
+        {
+            If (Enemy == 1)
+            {
+                List.Add(A Message Log, Operator.Join("Horned Slime", Operator.Join(Operator.Join(" squished on ", "Celeste"), "!")));
+                animation = 11;
+                Event.Broadcast("animation");
+                Call Mon Attack target(target) w/ pwr(2) status(8)("") turns(2) s-effect(16) drain("");
+            }
+            Else
+            {
+                If (Enemy == 2)
+                {
+                    List.Add(A Message Log, Operator.Join("Blade Wasp", Operator.Join(Operator.Join(" stung ", Character Names[target]), "!")));
+                    If (Operator.Random(1 , 4) == 1)
+                    {
+                        List.Add(A Message Log, "But it missed!");
+                        Sound.Play(Small Beep);
+                    }
+                    Else
+                    {
+                        animation = 21;
+                        Event.Broadcast("animation");
+                        Call Mon Attack target(target) w/ pwr(7) status("")("") turns("") s-effect(26) drain("");
+                    }
+                }
+                Else
+                {
+                    If (Enemy == 3)
+                    {
+                        If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                        {
+                            List.Add(A Message Log, Operator.Join("Axe Killer", " defends!"));
+                            animation = 31;
+                            Event.Broadcast("animation2");
+                            Sound.Play(impervious);
+                            List.ReplaceItem(Character/team buffs, 13, 1);
+                        }
+                        Else
+                        {
+                            Call Monster Normal Attack;
+                        }
+                    }
+                    Else
+                    {
+                        If (Enemy == 4)
+                        {
+                            If (Operator.Random(1 , 2) == 1)
+                            {
+                                List.Add(A Message Log, Operator.Join("King Slime", Operator.Join(Operator.Join(" squished flat onto ", Character Names[target]), "!")));
+                                Call Mon whole team w/ pwr(2) status(8)("") turn(3) s-effect(16);
+                            }
+                            Else
+                            {
+                                List.Add(A Message Log, Operator.Join("King Slime", " puffs up and squeezes your team!"));
+                                target = 1;
+                                animation = 42;
+                                Event.Broadcast("animation");
+                                Call Mon Attack target(target) w/ pwr(3.5) status("")("") turns("") s-effect(10) drain("");
+                                target = 2;
+                                animation = 42;
+                                Event.Broadcast("animation");
+                                Call Mon Attack target(target) w/ pwr(3.5) status("")("") turns("") s-effect(10) drain("");
+                            }
+                        }
+                        Else
+                        {
+                            If (Enemy == 5)
+                            {
+                                If (Not ((Enemy No.2 > 0)))
+                                {
+                                    List.Add(A Message Log, Operator.Join("Demon Spiky", " sharpens its spikes!"));
+                                    animation = 51;
+                                    Event.Broadcast("animation2");
+                                    List.ReplaceItem(Character/team buffs, 14, 3);
+                                    Sound.Play(spikes);
+                                }
+                                Else
+                                {
+                                    Call Monster Normal Attack;
+                                }
+                            }
+                            Else
+                            {
+                                If (Enemy == 6)
+                                {
+                                    List.Add(A Message Log, Operator.Join("Mummy Stony", " tosses stones at the team!"));
+                                    Call Mon whole team w/ pwr(2) status("")("") turn("") s-effect(21);
+                                }
+                                Else
+                                {
+                                    If (Enemy == 7)
+                                    {
+                                        List.Add(A Message Log, Operator.Join("Scorching Infero", Operator.Join(Operator.Join("'s flames scorch ", Character Names[target]), "!")));
+                                        animation = 71;
+                                        Event.Broadcast("animation");
+                                        Call Mon Attack target(target) w/ pwr(4) status(11)("") turns(3) s-effect(39) drain("");
+                                    }
+                                    Else
+                                    {
+                                        If (Enemy == 8)
+                                        {
+                                            If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                                            {
+                                                List.Add(A Message Log, Operator.Join("Vampire Bat", Operator.Join(" sucks", " blood!")));
+                                                animation = 81;
+                                                Event.Broadcast("animation");
+                                                Call Mon Attack target(target) w/ pwr(4) status("")("") turns("") s-effect(44) drain(0.75);
+                                            }
+                                            Else
+                                            {
+                                                Call Monster Normal Attack;
+                                            }
+                                        }
+                                        Else
+                                        {
+                                            If (Enemy == 9)
+                                            {
+                                                If (Operator.Random(1 , 2) == 1)
+                                                {
+                                                    List.Add(A Message Log, Operator.Join("Virulent Scorpion", " bites with its fangs!"));
+                                                    Call Mon whole team w/ pwr(2.5) status(8)(2) turn(4) s-effect(26);
+                                                }
+                                                Else
+                                                {
+                                                    List.Add(A Message Log, Operator.Join("Virulent Scorpion", " drains the team's blood!"));
+                                                    animation = 92;
+                                                    Event.Broadcast("animation");
+                                                    Call Mon Attack target(1) w/ pwr(1.5) status(1)("") turns(2) s-effect(9) drain(1);
+                                                    animation = 92;
+                                                    Event.Broadcast("animation");
+                                                    Call Mon Attack target(2) w/ pwr(1.5) status(1)("") turns(2) s-effect(9) drain(1);
+                                                    animation = 92;
+                                                    Event.Broadcast("animation");
+                                                    Call Mon Attack target(3) w/ pwr(1.5) status(1)("") turns(2) s-effect(9) drain(1);
+                                                }
+                                            }
+                                            Else
+                                            {
+                                                If (Enemy == 10)
+                                                {
+                                                    If (Operator.Random(1 , 2) == 1)
+                                                    {
+                                                        List.Add(A Message Log, Operator.Join("Melachony Witch", " incants a poison spell!"));
+                                                        Call Mon whole team w/ pwr(2.5) status("")(2) turn(3) s-effect(19);
+                                                    }
+                                                    Else
+                                                    {
+                                                        List.Add(A Message Log, Operator.Join("Melachony Witch", " shoots freezing, stunning icebolts!"));
+                                                        Repeat (Operator.Random(4 , 6))
+                                                        {
+                                                            animation = 102;
+                                                            Event.Broadcast("animation");
+                                                            Call Mon Attack target(Operator.Random(1 , 3)) w/ pwr(1) status("")(13) turns(2) s-effect(29) drain("");
+                                                        }
+                                                    }
+                                                }
+                                                Else
+                                                {
+                                                    If (Enemy == 11)
+                                                    {
+                                                        If (Operator.Random(1 , 2) == 1)
+                                                        {
+                                                            If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                                                            {
+                                                                List.Add(A Message Log, Operator.Join("Aggressive Beehive", Operator.Join(Operator.Join(" stings ", Character Names[target]), "'s vital spots!")));
+                                                                If (Operator.Random(1 , 5) == 1)
+                                                                {
+                                                                    animation = 111;
+                                                                    Event.Broadcast("animation");
+                                                                    Call Mon Attack target(target) w/ pwr(8) status(2)("") turns(2) s-effect(26) drain("");
+                                                                }
+                                                                Else
+                                                                {
+                                                                    Sound.Play(Small Beep);
+                                                                    List.Add(A Message Log, "But it missed!");
+                                                                }
+                                                            }
+                                                            Else
+                                                            {
+                                                                List.Add(A Message Log, Operator.Join("Aggressive Beehive", " releases bee swarms!"));
+                                                                Repeat (Operator.Random(4 , 6))
+                                                                {
+                                                                    animation = 112;
+                                                                    Event.Broadcast("animation");
+                                                                    Call Mon Attack target(Operator.Random(1 , 3)) w/ pwr(1.5) status(1)("") turns(3) s-effect(10) drain("");
+                                                                }
+                                                            }
+                                                        }
+                                                        Else
+                                                        {
+                                                            List.Add(A Message Log, Operator.Join("Aggressive Beehive", " releases bees to sting your team!"));
+                                                            Repeat (Operator.Random(4 , 6))
+                                                            {
+                                                                animation = 112;
+                                                                Event.Broadcast("animation");
+                                                                Call Mon Attack target(Operator.Random(1 , 3)) w/ pwr(1.5) status(1)("") turns(3) s-effect(10) drain("");
+                                                            }
+                                                        }
+                                                    }
+                                                    Else
+                                                    {
+                                                        If (Enemy == 12)
+                                                        {
+                                                            If (Operator.Random(1 , 2) == 1)
+                                                            {
+                                                                List.Add(A Message Log, Operator.Join("Egg Cyclops", " shoots obstructing lasers from its eyeball!"));
+                                                                Call Mon whole team w/ pwr(3) status(8)("") turn(4) s-effect(52);
+                                                            }
+                                                            Else
+                                                            {
+                                                                List.Add(A Message Log, Operator.Join("Egg Cyclops", " shoots bullets from its eyeball!"));
+                                                                Repeat (Operator.Random(4 , 6))
+                                                                {
+                                                                    animation = 122;
+                                                                    Event.Broadcast("animation");
+                                                                    Call Mon Attack target(Operator.Random(1 , 3)) w/ pwr(1.25) status("")("") turns("") s-effect(41) drain("");
+                                                                }
+                                                            }
+                                                        }
+                                                        Else
+                                                        {
+                                                            If (Enemy == 13)
+                                                            {
+                                                                If (Operator.Random(1 , 2) == 1)
+                                                                {
+                                                                    List.Add(A Message Log, Operator.Join("Evil Wolf ", Operator.Join(Operator.Join("bites ", Character Names[target]), "'s flesh!")));
+                                                                    animation = 131;
+                                                                    Event.Broadcast("animation");
+                                                                    Sound.Play(Bite);
+                                                                    Call Mon Attack target(target) w/ pwr(4.5) status(1)("") turns(3) s-effect(54) drain("");
+                                                                }
+                                                                Else
+                                                                {
+                                                                    If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                                                                    {
+                                                                        List.Add(A Message Log, Operator.Join("Evil Wolf ", "lets out a loud howl!"));
+                                                                        Call Stun(1) prob(0.22);
+                                                                        Call Stun(2) prob(0.22);
+                                                                        Call Stun(3) prob(0.22);
+                                                                        List.Add(A Message Log, Operator.Join("Evil Wolf ", "feels empowered!"));
+                                                                        animation = 132;
+                                                                        Event.Broadcast("animation2");
+                                                                        Sound.Play(Wolf Howl);
+                                                                        List.ReplaceItem(Character/team buffs, 12, 3);
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        List.Add(A Message Log, Operator.Join("Evil Wolf ", Operator.Join(Operator.Join("bites ", Character Names[target]), "'s flesh!")));
+                                                                        animation = 131;
+                                                                        Event.Broadcast("animation");
+                                                                        Sound.Play(Bite);
+                                                                        Call Mon Attack target(target) w/ pwr(4.5) status(1)("") turns(3) s-effect(54) drain("");
+                                                                    }
+                                                                }
+                                                            }
+                                                            Else
+                                                            {
+                                                                If (Enemy == 14)
+                                                                {
+                                                                    If (Operator.Random(1 , 3) == 1)
+                                                                    {
+                                                                        List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), Operator.Join(" saps ", Operator.Join(Character Names[target], "'s plasma with its laser"))));
+                                                                        animation = 142;
+                                                                        Event.Broadcast("animation");
+                                                                        List.ReplaceItem(Character/team buffs, 12, 4);
+                                                                        List.Add(A Message Log, "and increases its attack!");
+                                                                        Call Mon Attack target(target) w/ pwr(3.5) status(((Operator.Random(0 , 1) * 9) + 2))("") turns(3) s-effect(8) drain("");
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        If (Operator.Random(1 , 2) == 1)
+                                                                        {
+                                                                            List.Add(A Message Log, "Photonix unleashes its mighty lightsaber!");
+                                                                            animation = 143;
+                                                                            Event.Broadcast("animation");
+                                                                            Call Mon Attack target(target) w/ pwr(6.5) status("")("") turns("") s-effect(36) drain(1.25);
+                                                                            List.ReplaceItem(Character/team buffs, 10, 3);
+                                                                            List.ReplaceItem(Character/team buffs, 6, 2);
+                                                                            List.Add(A Message Log, "It then got slower and loses its guard...");
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            List.Add(A Message Log, "Photonix's poison flaming spear stabs the team!");
+                                                                            animation = 144;
+                                                                            Event.Broadcast("animation");
+                                                                            Call Mon Attack target(1) w/ pwr(2) status(((Operator.Random(0 , 1) * 9) + 2))("") turns(2) s-effect(9) drain(1.25);
+                                                                            animation = 144;
+                                                                            Event.Broadcast("animation");
+                                                                            Call Mon Attack target(2) w/ pwr(2) status(((Operator.Random(0 , 1) * 9) + 2))("") turns(2) s-effect(9) drain(1.25);
+                                                                            animation = 144;
+                                                                            Event.Broadcast("animation");
+                                                                            Call Mon Attack target(3) w/ pwr(2) status(((Operator.Random(0 , 1) * 9) + 2))("") turns(2) s-effect(9) drain(1.25);
+                                                                            target = Operator.Random(1 , 3);
+                                                                        }
+                                                                    }
+                                                                }
+                                                                Else
+                                                                {
+                                                                    If (Enemy == 15)
+                                                                    {
+                                                                        If (Operator.Random(1 , 2) == 1)
+                                                                        {
+                                                                            If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                                                                            {
+                                                                                List.Add(A Message Log, "Thornlash Devil attacks while sharpening its spikes!");
+                                                                                animation = 155;
+                                                                                Event.Broadcast("animation2");
+                                                                                Call Mon Attack target(target) w/ pwr(4.5) status("")("") turns("") s-effect(18) drain("");
+                                                                                List.ReplaceItem(Character/team buffs, 14, 4);
+                                                                                Sound.Play(spikes);
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                                Call Monster Normal Attack;
+                                                                            }
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            List.Add(A Message Log, "Thornlash Devil headbutts the team aggresively!");
+                                                                            Call Mon whole team w/ pwr(5.5) status(13)("") turn("") s-effect(42);
+                                                                            List.ReplaceItem(Character/team buffs, 10, 3);
+                                                                            List.Add(A Message Log, "Thornlash Devil temporarily loses its guard.");
+                                                                        }
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        If (Enemy == 16)
+                                                                        {
+                                                                            If (Operator.Random(1 , 2) == 1)
+                                                                            {
+                                                                                List.Add(A Message Log, Operator.Join("Toxicant Insectoidius", " shoots spider webs!"));
+                                                                                Call Mon whole team w/ pwr(3.5) status(8)(13) turn(5) s-effect(23);
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                                List.Add(A Message Log, Operator.Join("Toxicant Insectoidius", " sprays poisonous acid!"));
+                                                                                Call Mon whole team w/ pwr(2.5) status(2)("") turn(3) s-effect(23);
+                                                                            }
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If (Enemy == 17)
+                                                                            {
+                                                                                If (Operator.Random(1 , 2) == 1)
+                                                                                {
+                                                                                    If (Not (((Enemy No.2 > 0) And (enemy1killed == 0))))
+                                                                                    {
+                                                                                        List.Add(A Message Log, Operator.Join("Robotic Aerocyclops", " shoots beams with all its might!"));
+                                                                                        Call Mon whole team w/ pwr(6) status("")("") turn("") s-effect(52);
+                                                                                        List.ReplaceItem(Character/team buffs, 10, 3);
+                                                                                        List.Add(A Message Log, "Robotic Aerocyclops temporarily loses its guard.");
+                                                                                    }
+                                                                                    Else
+                                                                                    {
+                                                                                        List.Add(A Message Log, Operator.Join("Robotic Aerocyclops", " shot a slowing beam!"));
+                                                                                        animation = 173;
+                                                                                        Event.Broadcast("animation");
+                                                                                        Call Mon Attack target(target) w/ pwr(5.5) status(8)("") turns(4) s-effect(56) drain("");
+                                                                                    }
+                                                                                }
+                                                                                Else
+                                                                                {
+                                                                                    List.Add(A Message Log, Operator.Join("Robotic Aerocyclops", " shot a slowing beam!"));
+                                                                                    animation = 173;
+                                                                                    Event.Broadcast("animation");
+                                                                                    Call Mon Attack target(target) w/ pwr(5.5) status(8)("") turns(4) s-effect(56) drain("");
+                                                                                }
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                                If (Enemy == 18)
+                                                                                {
+                                                                                    If (Operator.Random(1 , 2) == 1)
+                                                                                    {
+                                                                                        List.Add(A Message Log, Operator.Join("Fuming Viridflame", " breathes blazing flames!"));
+                                                                                        Call Mon whole team w/ pwr(2.5) status(11)("") turn(4) s-effect(20);
+                                                                                    }
+                                                                                    Else
+                                                                                    {
+                                                                                        List.Add(A Message Log, Operator.Join("Fuming Viridflame", " unleashes its fiery fury!"));
+                                                                                        animation = 182;
+                                                                                        Event.Broadcast("animation");
+                                                                                        Call Mon Attack target(target) w/ pwr(4.5) status(11)("") turns(3) s-effect(30) drain("");
+                                                                                    }
+                                                                                }
+                                                                                Else
+                                                                                {
+                                                                                    If (Enemy == 19)
+                                                                                    {
+                                                                                        If (Operator.Random(1 , 2) == 1)
+                                                                                        {
+                                                                                            List.Add(A Message Log, Operator.Join("Stonewarding Statue", Operator.Join(" kicks ", Operator.Join(Character Names[target], " brutally!"))));
+                                                                                            animation = 192;
+                                                                                            Event.Broadcast("animation");
+                                                                                            Call Mon Attack target(target) w/ pwr(6) status(13)("") turns(3) s-effect(31) drain("");
+                                                                                        }
+                                                                                        Else
+                                                                                        {
+                                                                                            List.Add(A Message Log, Operator.Join("Stonewarding Statue", " throws a big boulder!"));
+                                                                                            Call Mon whole team w/ pwr(4.5) status("")("") turn("") s-effect(42);
+                                                                                            List.ReplaceItem(Character/team buffs, 10, 2);
+                                                                                            List.Add(A Message Log, "Stonewarding Statue temporarily loses its guard.");
+                                                                                        }
+                                                                                    }
+                                                                                    Else
+                                                                                    {
+                                                                                        If (Enemy == 21)
+                                                                                        {
+                                                                                            If (Operator.Random(1 , 2) == 1)
+                                                                                            {
+                                                                                                List.Add(A Message Log, Operator.Join("Dark Spirit", " thwacks with its corrupted fists!"));
+                                                                                                Sound.Play(rudebuster);
+                                                                                                Sound.Play(blast);
+                                                                                                animation = "dark2";
+                                                                                                Event.Broadcast("animation");
+                                                                                                Call Mon Attack target(target) w/ pwr(4.5) status(12)("") turns(5) s-effect(31) drain("");
+                                                                                                Call Stun(target) prob(0.49);
+                                                                                            }
+                                                                                            Else
+                                                                                            {
+                                                                                                List.Add(A Message Log, Operator.Join("Dark Spirit", " breathes scorching flames!"));
+                                                                                                animation = 75;
+                                                                                                Event.Broadcast("animation");
+                                                                                                Call Mon Attack target(1) w/ pwr(3) status(11)("") turns(5) s-effect(87) drain("");
+                                                                                                animation = 75;
+                                                                                                Event.Broadcast("animation");
+                                                                                                Call Mon Attack target(2) w/ pwr(3) status(11)("") turns(5) s-effect(87) drain("");
+                                                                                                animation = 75;
+                                                                                                Event.Broadcast("animation");
+                                                                                                Call Mon Attack target(3) w/ pwr(3) status(11)("") turns(5) s-effect(87) drain("");
+                                                                                            }
+                                                                                        }
+                                                                                        Else
+                                                                                        {
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Else
+        {
+            target = 1;
+            Call Monster  Special;
+        }
+    }
+    Control.Wait(0.4);
+}
+
+Define Mon whole team w/ pwr(string pwr) status(string a)(string b) turn(string t) s-effect(string s) (warp=false) //THIS IS WHERE ENEMIES' AOE ATTACKS OCCURS
+{
+    target = 1;
+    animation = Operator.Join(Enemy, 1);
+    If (Character HP[target] > 0)
+    {
+        Event.Broadcast("animation");
+    }
+    Call Mon Attack target(1) w/ pwr(pwr) status(a)(b) turns(t) s-effect(s) drain("");
+    Control.Wait(0.3);
+    target = 2;
+    animation = Operator.Join(Enemy, 1);
+    If (Character HP[target] > 0)
+    {
+        Event.Broadcast("animation");
+    }
+    Call Mon Attack target(2) w/ pwr(pwr) status(a)(b) turns(t) s-effect(s) drain("");
+    Control.Wait(0.3);
+    target = 3;
+    animation = Operator.Join(Enemy, 1);
+    If (Character HP[target] > 0)
+    {
+        Event.Broadcast("animation");
+    }
+    Call Mon Attack target(3) w/ pwr(pwr) status(a)(b) turns(t) s-effect(s) drain("");
+    Control.Wait(0.3);
+}
+
+Define Next Move (warp=false) //THIS IS WHERE THE NEXT ACTOR DOES AN ACTION BASED BY AGILITY
+{
+    TurnOver = 0;
+    hover = 0;
+    If ((Character HP[3] < 1) And ((Character HP[2] < 1) And (Character HP[1] < 1)))
+    {
+        Event.BroadcastAndWait("Game Over");
+    }
+    Else
+    {
+        If ((attacker == 2) Or (Character HP[2] < 1))
+        {
+            Call Reduce team effect turn counter: effect(4);
+        }
+        Repeat Until ((TurnOver == 1) Or (EnemyHP < 1))
+        {
+            List.DeleteAll(Items);
+            If (attacker < 4)
+            {
+                If (Character HP[attacker] > 0)
+                {
+                    If (Operator.LetterOf(Character Status[attacker], 13) == 0)
+                    {
+                        action = 0;
+                        Call Decrease Status(7) nomsg();
+                        Call Player-Action;
+                        Event.BroadcastAndWait("Select Action menu1");
+                        Event.BroadcastAndWait("del.clone");
+                        Call Player-Action;
+                    }
+                    Else
+                    {
+                        TurnOver = 1;
+                        Call Decrease Status(13) nomsg();
+                        Call Decrease Status(7) nomsg();
+                    }
+                }
+                Else
+                {
+                    TurnOver = 1;
+                }
+            }
+            Else
+            {
+                If ((Character/team buffs[15] == 0) And ((Character/team buffs[16] == 0) Or ((attacker == 5) And (enemy1killed == 0))))
+                {
+                    Call Enemy Movement;
+                }
+                Else
+                {
+                    TurnOver = 1;
+                }
+            }
+        }
+    }
+}
+
+Define Pause(string -x) (warp=false)
+{
+    Repeat (3)
+    {
+        Control.Wait(0);
+    }
+}
+
+Define Player-Action (warp=false) //THIS WAITS FOR A BUTTON INPUT, AND EXECUTES THE ACTION SELECTED (OR FAILS TO AND RESETS IF THERE EG ISNT ENOUGH MP)
+{
+    List.Hide(Items);
+    attack = Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[attacker], 1), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[attacker], 2), Operator.LetterOf(Character Stats AAADDDSSS[attacker], 3)));
+    If (Operator.LetterOf(Character Status[attacker], 3) > 0)
+    {
+        attack = (attack * 1.25);
+    }
+    def = Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 4), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 5));
+    If (Character/team buffs[10] > 0)
+    {
+        def = Operator.Round((def * 0.5));
+    }
+    lvl = Character levels[attacker];
+    If ((action == 1) Or (action == ""))
+    {
+        animation = "B";
+        Event.Broadcast("animation2");
+        List.Add(A Message Log, Operator.Join(Operator.Join(Character Names[attacker], " attacks"), "!"));
+        Call Charater Attack w/ power(5) ignore spikes("");
+    }
+    If (action == 2)
+    {
+        action = 0;
+        Event.BroadcastAndWait("Special menu");
+        Call Special(action);
+        action = 0;
+    }
+    If (action == 4)
+    {
+        Sound.Play(block);
+        animation = "D";
+        target = attacker;
+        Event.Broadcast("animation");
+        Call Gain Status(7) turns(1) nomsg("");
+        Call Pause("");
+        TurnOver = 1;
+        List.ReplaceItem(Character MP, attacker, (Character MP[attacker] + 3));
+        If (Character MP[attacker] > 10)
+        {
+            List.ReplaceItem(Character MP, attacker, 10);
+        }
+    }
+    If (action == 3)
+    {
+        List.DeleteAll(Items);
+        action = 0;
+        Event.BroadcastAndWait("Item menu");
+        Event.BroadcastAndWait("del.clone");
+        Control.Wait(0.2);
+        If ((action == 1) And (ItemCounter[1] > 0))
+        {
+            Call Heal(4) /10;
+            List.ReplaceItem(ItemCounter, 1, (ItemCounter[1] - 1));
+        }
+        Else
+        {
+            If ((action == 2) And (ItemCounter[2] > 0))
+            {
+                Call Heal(7) /10;
+                List.ReplaceItem(ItemCounter, 2, (ItemCounter[2] - 1));
+            }
+            Else
+            {
+                If ((action == 3) And (ItemCounter[3] > 0))
+                {
+                    Call Heal(10) /10;
+                    List.ReplaceItem(ItemCounter, 3, (ItemCounter[3] - 1));
+                }
+                Else
+                {
+                    If ((action == 6) And (ItemCounter[6] > 0))
+                    {
+                        List.ReplaceItem(ItemCounter, 6, (ItemCounter[6] - 1));
+                        TurnOver = 1;
+                        If (Character HP[1] < 1)
+                        {
+                            Sound.Play(revival-101soundboards2);
+                            List.ReplaceItem(Character HP, 1, (10 * (Character levels[1] + zAdditional HP characters (*10)[1])));
+                            List.Add(A Message Log, "The dew revives Celeste!");
+                            attacker = 1;
+                            List.Add(damage number text, (10 * (Character levels[1] + zAdditional HP characters (*10)[1])));
+                            List.Add(damage number x, cx[1]);
+                            List.Add(damage number color, 166);
+                            Call Cure Status(9) nm();
+                            Control.Wait(0.5);
+                        }
+                        Else
+                        {
+                        }
+                        If (Character HP[2] < 1)
+                        {
+                            Sound.Play(revival-101soundboards2);
+                            List.ReplaceItem(Character HP, 2, (10 * (Character levels[2] + zAdditional HP characters (*10)[2])));
+                            List.Add(A Message Log, "The dew revives Drayden!");
+                            attacker = 2;
+                            List.Add(damage number text, (10 * (Character levels[2] + zAdditional HP characters (*10)[2])));
+                            List.Add(damage number x, cx[2]);
+                            List.Add(damage number color, 166);
+                            Call Cure Status(9) nm();
+                            Control.Wait(0.5);
+                        }
+                        Else
+                        {
+                        }
+                        If (Character HP[3] < 1)
+                        {
+                            Sound.Play(revival-101soundboards2);
+                            List.ReplaceItem(Character HP, 3, (10 * (Character levels[3] + zAdditional HP characters (*10)[3])));
+                            List.Add(A Message Log, "The dew revives Lyra!");
+                            List.Add(damage number text, (10 * (Character levels[3] + zAdditional HP characters (*10)[3])));
+                            List.Add(damage number x, cx[3]);
+                            List.Add(damage number color, 166);
+                            attacker = 3;
+                            Call Cure Status(9) nm();
+                            Control.Wait(0.5);
+                        }
+                        Else
+                        {
+                        }
+                    }
+                    Else
+                    {
+                        If 
+                        {
+                        }
+                        Else
+                        {
+                            If ((action == 4) And (ItemCounter[4] > 0))
+                            {
+                                List.Add(A Message Log, Operator.Join(Character Names[attacker], "'s MP heal!"));
+                                Sound.Play(Level Up);
+                                List.ReplaceItem(Character MP, attacker, (Character MP[attacker] + 5));
+                                If (Character MP[attacker] > 10)
+                                {
+                                    List.ReplaceItem(Character MP, attacker, 10);
+                                }
+                                List.ReplaceItem(ItemCounter, 4, (ItemCounter[4] - 1));
+                                TurnOver = 1;
+                                List.Add(damage number text, 5);
+                                List.Add(damage number x, cx[attacker]);
+                                List.Add(damage number color, "");
+                            }
+                            Else
+                            {
+                                If ((action == 5) And (ItemCounter[5] > 0))
+                                {
+                                    List.Add(A Message Log, Operator.Join(Character Names[attacker], "'s status conditions heal!"));
+                                    Sound.Play(Heal1);
+                                    Call Cure Status(9) nm();
+                                    List.ReplaceItem(ItemCounter, 5, (ItemCounter[5] - 1));
+                                    TurnOver = 1;
+                                }
+                                Else
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Call Pause("");
+        }
+        action = 4;
+    }
+}
+
+Define Reduce team effect turn counter: effect(string eff) (warp=false)
+{
+    trigger effect? = 0;
+    If (Character/team buffs[eff] > 0)
+    {
+        List.ReplaceItem(Character/team buffs, eff, (Character/team buffs[eff] - 1));
+        trigger effect? = 1;
+    }
+}
+
+Define Special(string ans) (warp=false) //THE SKILLS THAT THE PLAYER SIDE USES.
+{
+    List.Hide(Items);
+    If (((Character MP[attacker] + 0.1) > MP Cost[ans]) And (Not ((MP Cost[ans] == ""))))
+    {
+        List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Character Names[attacker], " used "), Character Special[ans]), "!"));
+        List.ReplaceItem(Character MP, attacker, (Character MP[attacker] - MP Cost[ans]));
+        If (ans == 1)
+        {
+            animation = "A1";
+            Sound.Play(Powerup);
+            attacker = 3;
+            Call Heal(2) /10;
+            Call Cure Status(2) nm();
+            Call Pause("");
+            attacker = 2;
+            Call Heal(2) /10;
+            Call Cure Status(2) nm();
+            Call Pause("");
+            attacker = 1;
+            Call Heal(2) /10;
+            Call Cure Status(2) nm();
+            Call Pause("");
+        }
+        Else
+        {
+            If (ans == 2)
+            {
+                Sound.Play(Launch);
+                Call Charater Attack w/ power(4) ignore spikes("");
+                animation = "A2";
+                Event.Broadcast("animation2");
+            }
+            Else
+            {
+                If (ans == 3)
+                {
+                    animation = "A3";
+                    Event.Broadcast("animation2");
+                    If ((Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[1], 7), Operator.Join(Operator.LetterOf(Character Stats AAADDDSSS[1], 8), Operator.LetterOf(Character Stats AAADDDSSS[1], 9))) / ((Operator.LetterOf(Character Status[1], 8) > 0) + 1)) < ceiling((Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 6), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 7), "")) / (((Character/team buffs[6] > 0) * 3) + 1))))
+                    {
+                        Sound.Play(Clapped);
+                        Call Charater Attack w/ power(6) ignore spikes(1);
+                    }
+                    Else
+                    {
+                        List.Add(A Message Log, "Thor's power shines most!");
+                        Sound.Play(Teleport);
+                        Call Charater Attack w/ power(9) ignore spikes(1);
+                        If ((Operator.Random(1 , 10) == 1) And (Character/team buffs[15] == 0))
+                        {
+                            Control.Wait(0.5);
+                            Sound.Play(lick);
+                            List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), " is stunned!"));
+                            List.ReplaceItem(Character/team buffs, 16, 1);
+                            animation = 76;
+                            Event.Broadcast("animation2");
+                            Control.Wait(0.6);
+                        }
+                    }
+                }
+                Else
+                {
+                    If (ans == 4)
+                    {
+                        target = 1;
+                        animation = "A4";
+                        List.Add(A Message Log, "In unity, your team starts to calmly regenerate MP.");
+                        Event.Broadcast("animation");
+                        Sound.Play(supercharge);
+                        List.ReplaceItem(Character/team buffs, 1, 5);
+                        Call Pause("");
+                    }
+                    Else
+                    {
+                        If (ans == 5)
+                        {
+                            animation = 161;
+                            Event.Broadcast("animation2");
+                            Sound.Play(Curse2);
+                            Call Charater Attack w/ power(2) ignore spikes(1);
+                            List.ReplaceItem(Character/team buffs, 2, 3);
+                            List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), " was poisoned by toxins!"));
+                            Call Pause("");
+                        }
+                        Else
+                        {
+                            If (ans == 6)
+                            {
+                                Sound.Play(whirl);
+                                List.ReplaceItem(Character/team buffs, 3, 1);
+                                target = 1;
+                                animation = 120;
+                                Event.Broadcast("animation");
+                                List.Add(A Message Log, "Celeste lures attention!");
+                                Call Pause("");
+                            }
+                            Else
+                            {
+                                If (ans == 7)
+                                {
+                                    Sound.Play(block);
+                                    List.Add(A Message Log, "Drayden aids the team with a blockade!");
+                                    List.ReplaceItem(Character/team buffs, 4, 1);
+                                    animation = "AD";
+                                    Event.Broadcast("animation2");
+                                    Call Pause("");
+                                }
+                                Else
+                                {
+                                    If (ans == 8)
+                                    {
+                                        animation = "AI";
+                                        Event.Broadcast("animation2");
+                                        Sound.Play(Earthquake1);
+                                        Call Charater Attack w/ power(8) ignore spikes("");
+                                        Control.Wait(0.2);
+                                        If (EnemyHP > 0)
+                                        {
+                                            target = 2;
+                                            Call Deal(((Character levels[2] + 3) * 2)) damage to character(2) drain("") s effect(10);
+                                        }
+                                    }
+                                    Else
+                                    {
+                                        If (ans == 9)
+                                        {
+                                            List.Add(A Message Log, "Drayden focuses intensely, ready to strike a critical point!");
+                                            target = 2;
+                                            animation = "AF";
+                                            Event.Broadcast("animation");
+                                            Sound.Play(powerup);
+                                            List.ReplaceItem(Character/team buffs, 5, 3);
+                                            Call Pause("");
+                                        }
+                                        Else
+                                        {
+                                            If (ans == 10)
+                                            {
+                                                animation = "AW";
+                                                Event.Broadcast("animation2");
+                                                Sound.Play(Webbed1);
+                                                Call Charater Attack w/ power(1) ignore spikes("");
+                                                If (Character/team buffs[6] > 0)
+                                                {
+                                                    List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), "'s agility drop is renwed."));
+                                                }
+                                                Else
+                                                {
+                                                    List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Sensing.Of(costume name, Enemy), "'s agility fell by "), floor((Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 6), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 7)) / 2))), " points."));
+                                                }
+                                                List.ReplaceItem(Character/team buffs, 6, 5);
+                                                Call Pause("");
+                                            }
+                                            Else
+                                            {
+                                                If (ans == 11)
+                                                {
+                                                    animation = "AR";
+                                                    Event.Broadcast("animation2");
+                                                    Sound.Play(Explosion);
+                                                    Call Charater Attack w/ power(10) ignore spikes("");
+                                                    List.Add(A Message Log, "Drayden temporarily loses his guard from his rage.");
+                                                    List.ReplaceItem(Character/team buffs, 7, 1);
+                                                    Call Pause("");
+                                                }
+                                                Else
+                                                {
+                                                    If (ans == 12)
+                                                    {
+                                                        animation = 71;
+                                                        Event.Broadcast("animation2");
+                                                        Sound.Play(Fire Fade);
+                                                        Call Charater Attack w/ power(3) ignore spikes(1);
+                                                        List.ReplaceItem(Character/team buffs, 8, 3);
+                                                        List.Add(A Message Log, Operator.Join(Sensing.Of(costume name, Enemy), " was burned by the blazing blade!"));
+                                                        Call Pause("");
+                                                    }
+                                                    Else
+                                                    {
+                                                        If (ans == 13)
+                                                        {
+                                                            target = 3;
+                                                            animation = "B1";
+                                                            Event.Broadcast("animation");
+                                                            Sound.Play(Heal1);
+                                                            List.Add(A Message Log, "A sentinel guards your team with transcendent energy!");
+                                                            List.ReplaceItem(Character/team buffs, 9, 5);
+                                                            Call Pause("");
+                                                        }
+                                                        Else
+                                                        {
+                                                            If (ans == 14)
+                                                            {
+                                                                If (Character/team buffs[10] > 0)
+                                                                {
+                                                                    List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Sensing.Of(costume name, Enemy), "'s defense drop "), "was renewed"), "!"));
+                                                                }
+                                                                Else
+                                                                {
+                                                                    List.Add(A Message Log, Operator.Join(Operator.Join(Operator.Join(Sensing.Of(costume name, Enemy), "'s defense fell "), floor((Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 4), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 5)) / 2))), " points!"));
+                                                                }
+                                                                animation = 173;
+                                                                Event.Broadcast("animation2");
+                                                                Sound.Play(debuff);
+                                                                List.ReplaceItem(Character/team buffs, 10, 3);
+                                                                Call Pause("");
+                                                            }
+                                                            Else
+                                                            {
+                                                                If (ans == 15)
+                                                                {
+                                                                    animation = "?A";
+                                                                    Event.Broadcast("animation2");
+                                                                    Sound.Play(Wand);
+                                                                    Call Deal((Character levels[3] * Operator.Random(1 , 9))) damage to enemy, critrate(-1) drain("") ign.spiike(1) othercause("D");
+                                                                }
+                                                                Else
+                                                                {
+                                                                    If (ans == 16)
+                                                                    {
+                                                                        Sound.Play(Revive);
+                                                                        Call Deal(((Character levels[3] + 8) * 3)) damage to character(3) drain("") s effect(22);
+                                                                        List.Add(A Message Log, "The team regenerates 5 MP from the etheral gleam.");
+                                                                        animation = "H";
+                                                                        target = 1;
+                                                                        Event.Broadcast("animation");
+                                                                        List.ReplaceItem(Character MP, 1, ((Character MP[1] + (5 * (Character MP[1] < 5))) + ((10 - Character MP[1]) * (Character MP[1] > 4))));
+                                                                        animation = "H";
+                                                                        target = 2;
+                                                                        Event.Broadcast("animation");
+                                                                        List.ReplaceItem(Character MP, 2, ((Character MP[2] + (5 * (Character MP[2] < 5))) + ((10 - Character MP[2]) * (Character MP[2] > 4))));
+                                                                        animation = "H";
+                                                                        target = 3;
+                                                                        Event.Broadcast("animation");
+                                                                        List.ReplaceItem(Character MP, 3, ((Character MP[3] + (5 * (Character MP[3] < 5))) + ((10 - Character MP[3]) * (Character MP[3] > 4))));
+                                                                        List.Add(damage number text, 5);
+                                                                        List.Add(damage number x, cx[1]);
+                                                                        List.Add(damage number color, "");
+                                                                        List.Add(damage number text, 5);
+                                                                        List.Add(damage number x, cx[2]);
+                                                                        List.Add(damage number color, "");
+                                                                        List.Add(damage number text, 5);
+                                                                        List.Add(damage number x, cx[3]);
+                                                                        List.Add(damage number color, "");
+                                                                        attacker = 1;
+                                                                        Call Cure Status(9) nm();
+                                                                        attacker = 2;
+                                                                        Call Cure Status(9) nm();
+                                                                        attacker = 3;
+                                                                        Call Cure Status(9) nm();
+                                                                        Call Pause("");
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        If (ans == 17)
+                                                                        {
+                                                                            If (Character HP[1] < 1)
+                                                                            {
+                                                                                Sound.Play(revival-101soundboards2);
+                                                                                List.ReplaceItem(Character HP, 1, (3 * (Character levels[1] + zAdditional HP characters (*10)[1])));
+                                                                                List.Add(A Message Log, "Celeste is rejuolevenated with energy.");
+                                                                                attacker = 1;
+                                                                                List.Add(damage number text, (3 * (Character levels[1] + zAdditional HP characters (*10)[1])));
+                                                                                List.Add(damage number x, cx[1]);
+                                                                                List.Add(damage number color, 166);
+                                                                                Call Cure Status(9) nm();
+                                                                                Control.Wait(0.5);
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                            }
+                                                                            If (Character HP[2] < 1)
+                                                                            {
+                                                                                Sound.Play(revival-101soundboards2);
+                                                                                List.ReplaceItem(Character HP, 2, (3 * (Character levels[2] + zAdditional HP characters (*10)[2])));
+                                                                                List.Add(A Message Log, "Drayden is rejuolevenated with energy.");
+                                                                                attacker = 2;
+                                                                                List.Add(damage number text, (3 * (Character levels[2] + zAdditional HP characters (*10)[2])));
+                                                                                List.Add(damage number x, cx[2]);
+                                                                                List.Add(damage number color, 166);
+                                                                                Call Cure Status(9) nm();
+                                                                                Control.Wait(0.5);
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                            }
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If (ans == 18)
+                                                                            {
+                                                                                animation = "B2";
+                                                                                Event.Broadcast("animation2");
+                                                                                Sound.Play(Clapped);
+                                                                                Call Charater Attack w/ power((Operator.Round((39.5 * 10 ^((-0.08 * ((Character HP[3] / (Character levels[3] + 8)) + 5))))) + 3)) ignore spikes("");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        TurnOver = 1;
+    }
+    Else
+    {
+        Call Pause("");
+    }
+}
+
+Define start btl (warp=false)
+{
+    enemy1killed = 0;
+    List.DeleteAll(A Message Log);
+    EnemyHP = Operator.Round(((Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 8), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 9)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 10), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 11))) / (((Enemy No.2 > 0) / 3) + 1)) * Operator.Random(0.951 , 0.998)));
+    If (Enemy == 20) //FINAL BOSS 2 FORMES BOTH HAVE FIXED HP FOR CINEMATIC EFFECT
+    {
+        EnemyHP = 12000;
+    }
+    If (Enemy == 21)
+    {
+        EnemyHP = 6500;
+    }
+    List.DeleteAll(Character/team buffs);
+    List.DeleteAll(Character Status);
+    List.Add(Character Status, 0000000000000); //THIS IS FOR STATUS CONDITIONS, START FRESH EACH BATTLE
+    List.Add(Character Status, 0000000000000);
+    List.Add(Character Status, 0000000000000);
+    List.DeleteAll(Character MP); //START FRESH BATTLE WITH FULL MP
+    List.Add(Character MP, 10);
+    List.Add(Character MP, 10);
+    List.Add(Character MP, 10);
+    Repeat (16)
+    {
+        List.Add(Character/team buffs, 0);
+    }
+    togainexp = 0;
+    EnemyHP += 0;
+    Battleover? = 0;
+    Control.Wait(0.2);
+    List.Add(A Message Log, Operator.Join(mon name[Enemy], " appears."));
+    If (Enemy No.2 > 0)
+    {
+        List.Add(A Message Log, Operator.Join(mon name[Enemy No.2], " appears."));
+    }
+    Control.Wait((3 + (((Enemy No.2 > 0) Or (Character exp[1] == 0)) * 0.6)));
+    sdb frame = 0;
+    Sensing.ResetTimer();
+    Repeat Until (sdb frame > 10) //PAUSE WHEN LINES ARE SPOKEN IN BATTLE
+    {
+        If (story despite battle == 1)
+        {
+            sdb frame = 0;
+        }
+        Else
+        {
+            sdb frame += 1;
+        }
+    }
+    If (Sensing.Timer() > 2)
+    {
+        List.Add(A Message Log, Operator.Join(mon name[Enemy], " appears."));
+        If (Enemy No.2 > 0)
+        {
+            List.Add(A Message Log, Operator.Join(mon name[Enemy No.2], " appears."));
+        }
+        Control.Wait(1);
+    }
+    If (Not (List.ContainsItem(boss flags, Enemy)))
+    {
+        If (Operator.Random(1 , 16) == 1) //AMBUSH
+        {
+            If (Enemy No.2 > 0)
+            {
+                List.Add(A Message Log, "But the monsters were caught off guard!"); 
+            }
+            Else
+            {
+                List.Add(A Message Log, Operator.Join("But ", Operator.Join(mon name[Enemy], " was caught off guard!"))); 
+            }
+            List.ReplaceItem(Character/team buffs, 15, 1);
+            Control.Wait(1);
+        }
+        Else
+        {
+            If (Operator.Random(1 , 15) == 1)
+            {
+                If (Enemy No.2 > 0) //BACK ATTACK
+                {
+                    List.Add(A Message Log, "The monsters suddenly attack!");
+                }
+                Else
+                {
+                    List.Add(A Message Log, Operator.Join(mon name[Enemy], " suddenly attacks!"));
+                }
+                attacker = 1;
+                Call Gain Status(13) turns(1) nomsg(1);
+                attacker = 2;
+                Call Gain Status(13) turns(1) nomsg(1);
+                attacker = 3;
+                Call Gain Status(13) turns(1) nomsg(1);
+                Control.Wait(1);
+            }
+            Else
+            {
+            }
+        }
+    }
+    ani x offset = 0;
+    Repeat Until (EnemyHP < 1) //THIS IS WHAT OCCURS: THE BATTLE CYCLE.
+    {
+        Call The BATTLE CYCLE;
+    }
+    If (Enemy No.2 > 0) //IF THERE ARE TWO ENEMIES IN THE BATTLE, SET IT TO THE ACTIVE TARGET NOW, AND THIS KILLS OFF THE FIRST ONE
+    {
+        List.ReplaceItem(Character/team buffs, 2, 0);
+        List.ReplaceItem(Character/team buffs, 8, 0);
+        List.ReplaceItem(Character/team buffs, 6, 0);
+        List.ReplaceItem(Character/team buffs, 10, 0);
+        List.ReplaceItem(Character/team buffs, 12, 0);
+        List.ReplaceItem(Character/team buffs, 13, 0);
+        Sound.PlayUntilDone(die);
+        enemy1killed = 1;
+        togainexp += Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 12), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 13)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 14), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 15)));
+        Enemy = Enemy No.2;
+        EnemyHP = Operator.Round((Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 8), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 9)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 10), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 11))) / (((Enemy No.2 > 0) / 3) + 1)));
+        ani x offset = 33;
+        Repeat Until (EnemyHP < 1)
+        {
+            Call The BATTLE CYCLE;
+        }
+        Control.Wait(0.24);
+        Event.Broadcast("mute");
+        Sound.PlayUntilDone(die);
+        List.Add(A Message Log, "Victory!");
+        Sound.PlayUntilDone(victory-101soundboards);
+        togainexp += Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 12), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 13)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 14), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 15)));
+        togainexp = floor((togainexp * 1.1));
+        If (Not ((Enemy == 20)))
+        {
+            Call Pause("");
+            Call Ex Tx(1);
+            Call Ex Tx(2);
+            Call Ex Tx(3);
+            Control.Wait(0.2);
+            Call Gain EXP(1);
+            If (Enemy > 3)
+            {
+                Call Gain EXP(2);
+            }
+            If (Enemy > 9)
+            {
+                Call Gain EXP(3);
+            }
+        }
+        Looks.Say("");
+        music state = 1;
+        Control.Wait(0.5);
+        Sound.StopAllSounds();
+        Event.Broadcast("unmute");
+        Battleover? = 1;
+        List.DeleteAll(A Message Log);
+    }
+    Else
+    {
+        Control.Wait(0.25);
+        If (Enemy < 21)
+        {
+            Event.Broadcast("mute");
+        }
+        Sound.PlayUntilDone(die);
+        List.Add(A Message Log, "Victory!");
+        If (Enemy == 21) //FINAL BOSS FAKE VICTORY, SECOND FORM REVEALS
+        {
+            Sound.Play(victory-101soundboards);
+            Event.Broadcast("finalboss2nd");
+            togainexp = 1800;
+            List.Add(A Message Log, "The Dark Spirit vanishes into the void.");
+            Control.Wait(1);
+            Event.Broadcast("revealfinalboss2nd");
+            Control.Wait(1);
+            music state = 4;
+            Sound.StopAllSounds();
+            List.Add(A Message Log, "But then the Dark Spirit reveals its");
+            List.Add(A Message Log, "true form - the Spectral Overlord!");
+            Enemy = 20;
+            List.ReplaceItem(Character/team buffs, 2, 0);
+            List.ReplaceItem(Character/team buffs, 8, 0);
+            List.ReplaceItem(Character/team buffs, 6, 0);
+            List.ReplaceItem(Character/team buffs, 10, 0);
+            List.ReplaceItem(Character/team buffs, 12, 0);
+            List.ReplaceItem(Character/team buffs, 13, 0);
+            EnemyHP = 12000;
+            ani x offset = 16;
+            Event.BroadcastAndWait("dialogueforfinalboss2");
+            Wait Until (Sensing.Of(costume #, Enemy) == 20);
+            Repeat Until (EnemyHP < 1)
+            {
+                Call The BATTLE CYCLE;
+            }
+            Control.Wait(0.12);
+            Event.Broadcast("mute");
+            Sound.PlayUntilDone(die);
+            List.Add(A Message Log, "Victory!");
+            Sound.PlayUntilDone(victory-101soundboards);
+            Control.Wait(2);
+            Looks.Say("");
+            music state = 1;
+            Control.Wait(0.125);
+            Sound.StopAllSounds();
+            Event.Broadcast("unmute");
+            Battleover? = 1;
+            List.DeleteAll(A Message Log);
+            Event.Broadcast("Delete Text");
+            Event.BroadcastAndWait("End");
+        }
+        Else
+        {
+            If (Not ((Enemy == 20))) //NOT THE FINAL BOSS, EXPERIENCE IS GAINED PROPERLY
+            {
+                Sound.PlayUntilDone(victory-101soundboards);
+                togainexp += Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 12), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 13)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 14), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy], 15)));
+                Call Pause("");
+                Call Ex Tx(1);
+                Call Ex Tx(2);
+                Call Ex Tx(3);
+                Control.Wait(0.2);
+                Call Gain EXP(1);
+                If (Enemy > 3)
+                {
+                    Call Gain EXP(2);
+                }
+                If (Enemy > 8)
+                {
+                    Call Gain EXP(3);
+                }
+            }
+            Looks.Say("");
+            music state = 1;
+            Control.Wait(0.5);
+            Sound.StopAllSounds();
+            Event.Broadcast("unmute");
+            Battleover? = 1;
+            List.DeleteAll(A Message Log);
+            Event.Broadcast("Delete Text");
+        }
+    }
+}
+
+Define Stun(string who) prob(string p) (warp=false) //CAUSES PAUSED STATUS EFFECT ON PLAYER SIDE WITH A CERTAIN PROBABLITY
+{
+    attacker = who;
+    If (Operator.Random(0 , 1.0) < p)
+    {
+        Call Gain Status(13) turns(1) nomsg("");
+    }
+    Else
+    {
+        If (Operator.LetterOf(Character Status[attacker], 13) < 1)
+        {
+            List.Add(A Message Log, Operator.Join(Character Names[attacker], " wasn't paused!"));
+        }
+    }
+    Control.Wait(0);
+}
+
+Define The BATTLE CYCLE (warp=false) //ADDS AGILITY STATS OF BOTH ENEMY SIDE AND PLAYER SIDE
+{
+    List.DeleteAll(turn calc);
+    List.DeleteAll(turn order);
+    Call Add Tcalc (1);
+    Call Add Tcalc (2);
+    Call Add Tcalc (3);
+    Call Add Tcalc (4);
+    Call Add Tcalc (5);
+    Call Battle Sim;
+    Call End of turn effects;
+}
+
+Define Turn Order Sort (warp=true) // SORTS THE NUMBERS FROM BIGGEST TO SMALLEST WHEN TURN ORDER IS CALCULATED
+{
+    counter t = 0;
+    attacker = 0;
+    Repeat (List.Length(turn calc))
+    {
+        counter t += 1;
+        If (turn calc[counter t] > turn calc[List.IndexOf(turn order, attacker)])
+        {
+            attacker = turn order[counter t];
+        }
+    }
+    List.DeleteItem(turn calc, List.IndexOf(turn order, attacker));
+    List.DeleteItem(turn order, List.IndexOf(turn order, attacker));
+}
+
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+1-10.wav
+arrow.mp3
+attack.wav
+Bite.wav
+blast.wav
+Bling1.wav
+block.wav
+bolting.wav
+Burn.wav
+Burn2.wav
+buy.wav
+cc.wav
+charge.wav
+Charge2.wav
+Clapped.wav
+Coin 2.wav
+crit.wav
+Crunch.wav
+Curse1.wav
+Curse2.wav
+DarkHit1.wav
+debuff.wav
+die.wav
+die2.wav
+Drain.wav
+Earthquake1.wav
+Explosion.wav
+Explosion 2.wav
+Fireball1.wav
+Fire Fade.wav
+Fire Fade2.wav
+gains.wav
+GunShoot1.wav
+heal.wav
+Heal1.wav
+ignis.wav
+impervious.mp3
+inn-101soundboards.mp3
+laser.wav
+Laser.wav
+laser2.wav
+Launch.wav
+Level Up.wav
+lick.wav
+MagicHit1.wav
+MagicHit2.wav
+Miss1.wav
+mpthief.wav
+mute.wav
+paralyzed.wav
+pet.wav
+Pluck.wav
+Powerup.wav
+powerup.wav
+Powerup 2.wav
+Punch1.wav
+Punch2.wav
+rankup.mp3.wav
+revival-101soundboards2.wav
+Revive.wav
+rudebuster.wav
+ShieldHit1.wav
+ShieldHit2.wav
+ShieldHit3.wav
+ShieldHit4.wav
+SLICE.wav
+Small Beep.wav
+smash.wav
+Spike1.wav
+spikes.wav
+Splat.wav
+ssa.wav
+stairs-down-101soundboards.mp3
+StormExplosion1.wav
+supercharge.wav
+Sword Slash.wav
+SwordSwing1.wav
+Teleport.wav
+victory-101soundboards.mp3
+walls-101soundboards.mp3
+Wand.wav
+WaterHit1.wav
+WaterSplash1.wav
+Webbed1.wav
+whirl.wav
+whoosh.wav
+Wolf Howl.wav
