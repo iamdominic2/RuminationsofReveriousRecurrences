@@ -26,3 +26,5 @@
 | Item5   | (Ether)          | 0  | —            | —     | User heal 10 MP                               | —                                          |
 | Item6   | (Panacea)        | 0  | —            | —     | User is cured of all bad status               | —                                          |
 | Defend  | (Defend)         | 0  | —            | —     | User gains Defending status (-50% dmg)        | —                                          |
+
+*:internally round(39.5*10^(-0.4+(HP/MAXHP)*-0.8)+3)
