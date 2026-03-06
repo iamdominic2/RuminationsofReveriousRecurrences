@@ -1,3 +1,5 @@
+//TEXT ENGINE.
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
@@ -22,13 +24,13 @@ WhenGreenFlagClicked()
         {
             If (story despite battle == 1)
             {
-                Event.Broadcast("Delete Text");
+                Event.Broadcast("Delete Text");  //AVOID MIXING BATTLE DESCRIPTIONS.
                 Call Print(A Message Log[(ceiling(msg scroll) + -3)]) x(-220) y((-135 + ((msg scroll % 1) * 15)));
                 Call Print(A Message Log[(ceiling(msg scroll) + -2)]) x(-220) y((-150 + ((msg scroll % 1) * 15)));
                 Call Print(A Message Log[(ceiling(msg scroll) + -1)]) x(-220) y((-165 + ((msg scroll % 1) * 15)));
                 Call Print(A Message Log[ceiling(msg scroll)]) x(-220) y((-180 + ((msg scroll % 1) * 15)));
             }
-            Else
+            Else ///RENDER HP OF ENEMIES.
             {
                 Control.Wait(0);
                 Event.Broadcast("Delete Text");
@@ -47,9 +49,9 @@ WhenGreenFlagClicked()
                         Call Print(Operator.Join("HP", EnemyHP)) x(0) y(-138);
                     }
                 }
-                Else
-                {
-                    Call Print(Sensing.Of(costume name, Enemy)) x(0) y(-123);
+                Else 
+                { 
+                    Call Print(Sensing.Of(costume name, Enemy)) x(0) y(-123); 
                     Call Print(Operator.Join("HP", EnemyHP)) x(0) y(-138);
                     Call Print(Sensing.Of(costume name, Enemy2)) x(0) y(-153);
                     Call Print(Operator.Join("HP", Operator.Round((Operator.Join(Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 8), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 9)), Operator.Join(Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 10), Operator.LetterOf(mon stat AAADDSSHHHHEEEEM[Enemy No.2], 11))) / (((Enemy No.2 > 0) / 3) + 1))))) x(0) y(-168);
@@ -62,12 +64,12 @@ WhenGreenFlagClicked()
         }
         Else
         {
-            Event.Broadcast("Delete Text");
+            Event.Broadcast("Delete Text"); //This is the common text engine.
             Call Print(A Message Log[(ceiling(msg scroll) + -3)]) x(-220) y((-135 + ((msg scroll % 1) * 15)));
             Call Print(A Message Log[(ceiling(msg scroll) + -2)]) x(-220) y((-150 + ((msg scroll % 1) * 15)));
             Call Print(A Message Log[(ceiling(msg scroll) + -1)]) x(-220) y((-165 + ((msg scroll % 1) * 15)));
             Call Print(A Message Log[ceiling(msg scroll)]) x(-220) y((-180 + ((msg scroll % 1) * 15)));
-            If (Battleover? == 0.01)
+            If (Battleover? == 0.01) //Text for the STATUS menu.
             {
                 If (Character exp[1] > 9999)
                 {
@@ -187,7 +189,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(Delete Text)
+WhenBroadcastReceived(Delete Text) //Occurs a lot, when old text needs to be erased
 {
     Control.DeleteThisClone();
 }
@@ -206,7 +208,7 @@ WhenBroadcastReceived(showstatus)
 
 //----- Start as clone ------------------------------------------------------------------------------------------------
 
-Control.WhenIStartAsClone()
+Control.WhenIStartAsClone() //Just white text.
 {
     If (Costume.GetNumberName(number) == 65)
     {
@@ -246,7 +248,7 @@ Define Print(string text) x(string x) y(string y) (warp=true)
         {
             ctext += 1;
             Looks.SwitchCostumeTo(Operator.LetterOf(text, ctext));
-            If (Not (((Costume.GetNumberName(number) == 65) Or (Costume.GetNumberName(number) == 75))))
+            If (Not (((Costume.GetNumberName(number) == 65) Or (Costume.GetNumberName(number) == 75)))) //Blank text, optimzation for framrate and flickering
             {
                 Control.CreateCloneOf(_myself_);
             }
