@@ -692,7 +692,7 @@ WhenGreenFlagClicked() //Basically, moves around according to inputs, outputs li
                     Call Story line add("portal. Too bad for you, it was a portal to hell!") wait input(1) end of section("");
                     Call Story line add("Lyra: Whhat?") wait input(1) end of section("");
                     Call Story line add("Dark Spirit: So all your INTESTINES will be in") wait input("") end of section("");
-                    Call Story line add("vein, and Lyra, your belief in God will ") wait input("") end of section("");
+                    Call Story line add("veins, and Lyra, your belief in God will ") wait input("") end of section("");
                     Call Story line add("be rendered all meaningless in an instant.") wait input(1) end of section("");
                     List.Add(flags, "ennnn");
                     Call Story line add("Dark Spirit: And you, yes, you, Celeste,") wait input("") end of section("");
