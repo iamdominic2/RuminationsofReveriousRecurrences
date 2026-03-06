@@ -1,3 +1,5 @@
+//A BUNCH OF ANIMATIONS, but they all involve zooming in or zooming out an image file at a specified location.
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
