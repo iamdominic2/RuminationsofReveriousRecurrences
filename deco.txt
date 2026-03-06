@@ -1,3 +1,5 @@
+//DECORATION OTHER THAN WALLS. Basic is same as map.
+
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
 WhenGreenFlagClicked()
