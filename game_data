@@ -184,3 +184,15 @@ STATS:
 | 33                            | 8700                      |
 | 34                            | 9999                      |
 | 35                            | -                         |
+
+Damage Formula for Enemy -> Player:
+round(attack/(e^(def*0.00625))*random(0.18,0.20)*power)
+Defend : Attack *0.6
+Burned : Attack *0.8
+Bulwark : Attack *0.7
+Target vulnerable : Attack *1.3
+Damage Formula for Player -> Enemy
+round(round((attack+lv-1)/(e^(def*0.009))*random(0.15,0.175))*power*(0.003*lv^2-0.029*lv+1.11))
+Defend : Power*0.6
+Crit : Raw damage x1.8
+
