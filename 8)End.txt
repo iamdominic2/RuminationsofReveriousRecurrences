@@ -1,6 +1,6 @@
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //Start is not end.
 {
     Motion.GoToXY(-5, 0);
     Looks.Hide();
@@ -9,7 +9,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(End)
+WhenBroadcastReceived(End) //Yes, it's text.
 {
     Looks.Hide();
     Looks.SwitchCostumeTo(costume46);
@@ -25,7 +25,7 @@ WhenBroadcastReceived(End)
 
 //----- Start as clone ------------------------------------------------------------------------------------------------
 
-Control.WhenIStartAsClone()
+Control.WhenIStartAsClone() //A fade effect.
 {
     Looks.Show();
     If (Costume.GetNumberName(number) > 0)
