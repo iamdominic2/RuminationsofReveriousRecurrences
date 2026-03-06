@@ -9,7 +9,7 @@ WhenGreenFlagClicked()
 
 //----- Broadcast received events -------------------------------------------------------------------------------------
 
-WhenBroadcastReceived(ee)
+WhenBroadcastReceived(ee) //THE FADE EFFECT WHEN ENCOUNTER ENEMY.
 {
     Looks.SetEffectTo(COLOR, 0);
     Looks.Show();
