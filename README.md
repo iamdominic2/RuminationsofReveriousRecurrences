@@ -1,18 +1,18 @@
 # Ruminations of Reverious Recurrences
-A traditional turn-based rpg where you discover your true identity through venturing through four fields.
+A traditional turn-based role-playing-game where you discover your true identity through venturing through four fields.
 
 Block Count = 7331
 
-This is a traditional turn-based rpg, but you heal all HP/MP after each encounter.
+This is a traditional turn-based RPG, but you heal all HP/MP after each encounter.
 On the field, move with your mouse, WASD, or arrow keys. Press the "i" button to check Items and Status.
 Encounters are more likely to occur where there are objects, eg. trees. Pick up items along the way!
 In battle, you will be able to select commands right before a character's action, and then the character will perform the action you select, provided that there is nothing restricting the action.
-Be sure to save at the blue circles (one at the start of each area AND also before the boss)
+Be sure to save at the blue circles! (There is one at the start of each area AND also before the boss)
 Be sure not to be underleveled for the boss! Training to the maximum possible potential for each area and learn new skills along the way! Finally, have fun!
 
 This is probably the first of my games to have a proper story.
 Essentially, this game likely took the most hours to make out of all my games. 
-Though I am glad I did manage to make something this big, haven't done that in a while, or ever.
+Though I am glad I did manage to make something this big, I haven't done that in a while, or ever.
 
-Play:
+Playable online link:
 https://iamdominic2.github.io/RuminationsofReveriousRecurrences/
