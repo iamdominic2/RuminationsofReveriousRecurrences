@@ -18,6 +18,6 @@ Playable online link:
 https://iamdominic2.github.io/RuminationsofReveriousRecurrences/
 
 *The file itself is too big to upload here, so:
-HTML version (download and load from downloads from browser folder): https://drive.google.com/file/d/1FTwCSjynBMwCNpUNuljzsW-XsySYcjuD/view?usp=sharing
+HTML version (download and load): https://drive.google.com/file/d/1FTwCSjynBMwCNpUNuljzsW-XsySYcjuD/view?usp=sharing
 
 Note: I only documented post-implementation to ensure full accuracy with the final balanced numbers and code (especially the enemy stats), as I might forget to change things here along the way.
