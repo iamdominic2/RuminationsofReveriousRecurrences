@@ -1,4 +1,4 @@
-//Basically, the STATUS screen.
+//Basically, the button to trigger STATUS.
 
 //----- Variables -----------------------------------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ Control.WhenIStartAsClone()
 
 //----- Custom blocks -------------------------------------------------------------------------------------------------
 
-Define MENU (warp=false) //RENDER MENU.
+Define MENU (warp=false) //ON OR OFF MENU.
 {
     List.DeleteAll(A Message Log);
     If (Motion.XPosition() < -221)
