@@ -6,7 +6,7 @@ clone no item = 10
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked() //Generate clones of items
 {
     Looks.Hide();
     List.DeleteAll(Collecteditems);
@@ -35,7 +35,7 @@ Control.WhenIStartAsClone()
         Looks.SetSizeTo(600);
         Motion.GoToXY((0 - MAP X), (0 - MAP Y));
         Looks.Hide();
-        If (Not (List.ContainsItem(Collecteditems, Costume.GetNumberName(name))))
+        If (Not (List.ContainsItem(Collecteditems, Costume.GetNumberName(name)))) //If item not collected 
         {
             Looks.Show();
         }
@@ -47,7 +47,7 @@ Control.WhenIStartAsClone()
         {
             Looks.Hide();
         }
-        If Sensing.TouchingObject(Overworld Player)
+        If Sensing.TouchingObject(Overworld Player) //ITEM COLLECTED, YAY!
         {
             Sound.Play(buy);
             message delay = -8;
@@ -60,7 +60,7 @@ Control.WhenIStartAsClone()
                 Motion.GoToXY((0 - MAP X), (0 - MAP Y));
                 Looks.ChangeEffectBy(GHOST, 9);
             }
-            Looks.Hide();
+            Looks.Hide(); //Prevent next collision
             Looks.ClearGraphicEffects();
         }
     }
