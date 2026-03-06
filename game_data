@@ -1,27 +1,27 @@
-ID	NAME	MP	USER	POWER	EFFECT	TRIVIA
-Attack	(regular attack)	0		5		
-Skill1	Alleviate	3	Celeste Lv6	0	Team heal 20% HP, -2 bad status duration	All as in whole party
-Skill2	Soldrain	2	Celeste Lv26	4	Drains 1/3 of damage done to foe	Sol = sun, Sounds like souldrain
-Skill3	Thormost	2	Celeste Lv15	6	50% more damage if faster than foe & 10% Stun	Thor = lightning god, Sounds like foremost (meaning: before)
-Skill4	Calmunity	0	Celeste Lv4	0	Team heal 1 MP for 5 turns	Calm = Mental (MP), unity = whole party, sounds like Community
-Skill5	Toxsins	2	Celeste Lv3	2	Poisons foe (Damages for 3 turns)	Sounds like toxins, contains "sins"
-Skill6	Ahlure	1	Celeste Lv11	0	Enemies target Celeste only for 1 turn	Sounds like allure("attract" enemy). Also "a lure"
-Skill7	Blockaid	2	Drayden Lv1	0	Team: -30% damage until Drayden's next action 	Sounds like Blockade. A block that aids the team.
-Skill8	Wimpulse	2	Drayden Lv14	8	User loses 20% HP	Drayden is a wimp for sure. Wimp + Impulse (He's also impulsive as a berserk warrior.)
-Skill9	Akillies	2	Drayden Lv23	0	Gain focusing status (Next 2 turns, crit)	Sounds like achilles'. Achilles heel = small, fatal point. Kill=... well, defeat enemy
-Skill10	Slothstomp	1	Drayden Lv2	1	Foe has halved speed for 5 turns	Status icon for slow is a muddy shoe
-Skill11	Ravarage	4	Drayden Lv28	10	User becomes vulnerable (Take 1.3x dmg, 1 turn)	Ravage (severe damage) + Rage (Anger, thus lowered defense)
-Skill12	Blazeblade	2	Drayden Lv10	3	Foe gets burn (-20% attack , dmg for 3 turns)	Alliteration, need a simple name...
-Skill13	Transentinel	3	Lyra Lv5	0	Team heals 12% HP for 5 turns	Transcend (beyond limits) + sentinel (protection)
-Skill14	Whizzen	2	Lyra Lv19	0	Foe becomes vulnerable (halves defense)	Sounds like Wizen (wrinkled with age = weakness)
-Skill15	Hopecus Popecus	1	Lyra Lv16	?	Does between 1-9x user's level in damage	Similar to Hocus Pocus, a famous spell.  Also, you Hope to the Pope (holy person) for big damage, right?
-Skill16	Etheral Light	0	Lyra Lv7	0	Lose 30% HP, team heals 5 MP, cures bad status	Ether = MP restoration, Light = Holy
-Skill17	Rejuolevenate	10	Lyra Lv25	0	Revives fallen teamates to 30%HP	Sounds like rejuvenate (give new energy to), also juole is SI unit for energy
-Skill18	Pleatition	2	Lyra Lv27	5*	More powerful the less HP the user has	Plea (urgent request) + Petition (begging for help)
-Item1	(Potion)	0			User heal 40% HP	
-Item2	(HiPotion)	0			User heal 70% HP	
-Item3	(MaxPotion)	0			User heal 100% HP	
-Item4	(RevivalDew)	0			Revives fallen teamates to 100%HP	
-Item5	(Ether)	0			User heal 10 MP	
-Item6	(Panacea)	0			User is cured of all bad status	
-Defend	(Defend)	0			User gains Defending status (-50% damage received)	
+ID,NAME,MP,USER,POWER,EFFECT,TRIVIA
+Attack,(regular attack),0,—,5,—,—
+Skill1,Alleviate,3,Celeste Lv6,0,"Team heal 20% HP, -2 bad status duration",All as in whole party
+Skill2,Soldrain,2,Celeste Lv26,4,Drains 1/3 of damage done to foe,"Sol = sun, Sounds like souldrain"
+Skill3,Thormost,2,Celeste Lv15,6,50% more damage if faster than foe & 10% Stun,"Thor = lightning god, sounds like foremost"
+Skill4,Calmunity,0,Celeste Lv4,0,Team heal 1 MP for 5 turns,"Calm = Mental (MP), unity = whole party"
+Skill5,Toxsins,2,Celeste Lv3,2,Poisons foe (Damages for 3 turns),"Sounds like toxins, contains ""sins"""
+Skill6,Ahlure,1,Celeste Lv11,0,Enemies target Celeste only for 1 turn,"Sounds like allure. Also ""a lure"""
+Skill7,Blockaid,2,Drayden Lv1,0,Team: -30% damage until next action,Sounds like Blockade. A block that aids.
+Skill8,Wimpulse,2,Drayden Lv14,8,User loses 20% HP,Wimp + Impulse (Berserk warrior)
+Skill9,Akillies,2,Drayden Lv23,0,"Gain focusing status (Next 2 turns, crit)",Sounds like Achilles' heel
+Skill10,Slothstomp,1,Drayden Lv2,1,Foe has halved speed for 5 turns,Status icon for slow is a muddy shoe
+Skill11,Ravarage,4,Drayden Lv28,10,"User becomes vulnerable (1.3x dmg, 1 turn)",Ravage + Rage (Lowered defense)
+Skill12,Blazeblade,2,Drayden Lv10,3,"Foe gets burn (-20% attack, 3 turns)",Alliteration
+Skill13,Transentinel,3,Lyra Lv5,0,Team heals 12% HP for 5 turns,Transcend + sentinel (protection)
+Skill14,Whizzen,2,Lyra Lv19,0,Foe becomes vulnerable (halves defense),Sounds like Wizen (wrinkled with age)
+Skill15,Hopecus Popecus,1,Lyra Lv16,?,Does 1-9x user's level in damage,Hocus Pocus + Hope to the Pope
+Skill16,Etheral Light,0,Lyra Lv7,0,"Lose 30% HP, team heals 5 MP, cures status","Ether = MP, Light = Holy"
+Skill17,Rejuolevenate,10,Lyra Lv25,0,Revives fallen teammates to 30% HP,Rejuvenate + Joule (SI unit for energy)
+Skill18,Pleatition,2,Lyra Lv27,5*,More power the less HP the user has,Plea + Petition (begging for help)
+Item1,(Potion),0,—,—,User heal 40% HP,—
+Item2,(HiPotion),0,—,—,User heal 70% HP,—
+Item3,(MaxPotion),0,—,—,User heal 100% HP,—
+Item4,(RevivalDew),0,—,—,Revives fallen teammates to 100% HP,—
+Item5,(Ether),0,—,—,User heal 10 MP,—
+Item6,(Panacea),0,—,—,User is cured of all bad status,—
+Defend,(Defend),0,—,—,User gains Defending status (-50% dmg),—
