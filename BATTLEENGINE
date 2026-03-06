@@ -28,7 +28,7 @@ WhenBroadcastReceived(BENC) //YOU DON'T WANT TO START A BOSS BATTLE WITH STATUS 
     Call BOSSL;
 }
 
-WhenBroadcastReceived(ENC)
+WhenBroadcastReceived(ENC) //WHEN A BATTLE ENCOUNTER OCCURS.
 {
     music state = 2;
     Enemy = Operator.Random(Operator.Join(Operator.LetterOf(enc:minmax[AREA], 1), Operator.LetterOf(enc:minmax[AREA], 2)) , Operator.Join(Operator.LetterOf(enc:minmax[AREA], 3), Operator.LetterOf(enc:minmax[AREA], 4)));
@@ -53,7 +53,7 @@ WhenBroadcastReceived(ENC)
     Call start btl;
 }
 
-WhenBroadcastReceived(heal) /FULL HP RESTORE, USED OUT OF BATTLE EACH TIME
+WhenBroadcastReceived(heal) //FULL HP RESTORE, USED OUT OF BATTLE EACH TIME
 {
     attacker = 1;
     Call Heal(99) /10;
