@@ -29,12 +29,12 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | Item5   | (Ether)          | 0  | —            | —     | User heal 10 MP                               | —                                          |
 | Item6   | (Panacea)        | 0  | —            | —     | User is cured of all bad status               | —                                          |
 | Defend  | (Defend)         | 0  | —            | —     | User Defends (-50% dmg & regen 3 MP)          | —                                          |
-
-*:internally round(39.5*10^(-0.4+(HP/MAXHP)*-0.8)+3)
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 [CHARACTER STATS]:
 
-  Celeste (area 1)                   
+------------------------------------------------------------------------------------
+| Celeste (area 1, start at lv 1)    |                           |     |     |     |    
 | LV                                 | ATK                       | DEF | AGI | HP  |
 | 1                                  | 18                        | 12  | 14  | 60  |
 | 2                                  | 21                        | 15  | 17  | 70  |
@@ -71,7 +71,8 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | 33                                 | 109                       | 82  | 84  | 380 |
 | 34                                 | 111                       | 85  | 85  | 390 |
 | 35                                 | 115                       | 90  | 85  | 400 |
-  Drayden (area 1 boss join at lv7)  |                           
+------------------------------------------------------------------------------------
+| Drayden (area 1 boss join at lv7)  |                           |     |     |     |    
 | LV                                 | ATK                       | DEF | AGI | HP  |
 | 1                                  | 20                        | 10  | 15  | 40  |
 | 2                                  | 22                        | 11  | 17  | 50  |
@@ -108,7 +109,8 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | 33                                 | 136                       | 86  | 88  | 360 |
 | 34                                 | 143                       | 90  | 89  | 370 |
 | 35                                 | 150                       | 95  | 90  | 380 |
-  Lyra (area 2 boss join at lv14) |                           
+------------------------------------------------------------------------------------
+| Lyra (area 2 boss join at lv14)    |                           |     |     |     |                        
 | LV                                 | ATK                       | DEF | AGI | HP  |
 | 1                                  | 2                         | 12  | 20  | 90  |
 | 2                                  | 3                         | 13  | 21  | 100 |
@@ -145,7 +147,8 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | 33                                 | 70                        | 105 | 91  | 410 |
 | 34                                 | 75                        | 108 | 94  | 420 |
 | 35                                 | 80                        | 110 | 95  | 430 |
-(MP is constant at 10)
+------------------------------------------------------------------------------------
+(Everyone's MP is constant at 10)
 
 [EXP]:
 
@@ -187,8 +190,8 @@ Sections: [SKILLS], [CHARACTER STATS], [EXP], [DAMAGE FORMULA], [MONSTER STATS],
 | 33                            | 8700                      |
 | 34                            | 9999                      |
 | 35                            | -                         |
+-------------------------------------------------------------
 
-[DAMAGE FORMULA]
 Damage Formula for Enemy -> Player:
 round(attack/(e^(def*0.00625))*random(0.18,0.20)*power)
 Defend : Attack *0.6
@@ -225,7 +228,7 @@ Crit : Raw damage x1.8
 | 19 | Stonewarding Statue   | 83  | 77  | 72  | 1845  | 296 | 4              | 0        | 2            |
 | 20 | Spectral Overlord     | 127 | 98  | 99  | 12000 | 0   | 4 BOSS FORME 2 | 3        | 3            |
 | 21 | Dark Spirit           | 117 | 96  | 70  | 6500  | 0   | 4 BOSS FORME 1 | 2        | 2            |
-
+---------------------------------------------------------------------------------------------------------
 For 1 enemy: HP*0.951 to 0.998
 For 2 enemies: No.1: HP*0.71325 to 0.7485 No.2:HP*0.75
 *FINAL BOSS always appears with FULL HP
@@ -275,4 +278,5 @@ Dark Spirit transforms to Spectral Overlord on defeat (No Party Heal in between)
 | Dark Spirit                                   | thwacks with its corrupted fists!                                 | 4.5   | Corruption status 5 turns, stun 49% chance                   |
 | Dark Spirit                                   | breathes scorching flames!                                        | 4     | Whole party, burned status 5 turns                           |
 |                                               |                                                                   |       |                                                              |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Monster Special Attack chance: Enemy Numbers 1-8: 40%; Enemy Number 9-21: 60% (evenly split) 
