@@ -1,3 +1,5 @@
+//SIMILAR TO ENEMY (first), not going to repeat again.)
+
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 attacker = 0
