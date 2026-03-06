@@ -3,7 +3,7 @@ A traditional turn-based role playing game where you discover your true identity
 
 Block Count = 7331 ; Most is in BATTLEENGINE
 
-This is a traditional turn-based RPG, but you heal all HP/MP after each encounter to elimiate the traditional-but-outdated idea of resource management between battles.
+This is a traditional turn-based RPG, but you heal all HP/MP after each encounter to eliminate the traditional-but-outdated idea of resource management between battles.
 On the field, move with your mouse, WASD, or arrow keys. Press the "i" button to check Items and Status.
 Encounters are more likely to occur where there are objects, e.g. trees. Pick up items along the way!
 In battle, you will be able to select commands right before a character's action, and then the character will perform the action you select, provided that there is nothing restricting the action.
