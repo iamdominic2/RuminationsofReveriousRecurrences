@@ -9,7 +9,7 @@ target = 0
 
 //----- Green flag events ---------------------------------------------------------------------------------------------
 
-WhenGreenFlagClicked()
+WhenGreenFlagClicked()  //The frame out of battle to hide off screen stuff. Nothing much to note.
 {
     Motion.GoToXY(0, 0);
     Looks.Hide();
