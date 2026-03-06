@@ -236,7 +236,7 @@ Define Deal(string x) damage to character(string y) drain(string d) s effect(str
     }
 }
 
-Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.spiike(string se) othercause(string c) (warp=false) //DIRECT DAMAGE, LIKE LYRA'S HOPECUS POCUS
+Define Deal(string x) damage to enemy, critrate(string y) drain(string DRAIN) ign.spiike(string se) othercause(string c) (warp=false) //DIRECT DAMAGE, LIKE LYRA'S HOPECUS POCUS
 {
     Event.Broadcast("enemyflash");
     Control.Wait(0);
@@ -246,7 +246,7 @@ Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.sp
         List.Add(A Message Log, Operator.Join(c, Operator.Join(Operator.Join(Operator.Join(Operator.Join("oes ", floor((1.8 * x))), " damage to "), Sensing.Of(costume name, Enemy)), "!")));
         Sound.Play(crit);
         EnemyHP += ceiling((-1.8 * x));
-        If (1 == 1)
+        If (DRAIN == 1)
         {
             Call Heal(((x / (Character levels[attacker] + zAdditional HP characters (*10)[attacker])) * (5 / 9))) /10;
         }
@@ -268,7 +268,7 @@ Define Deal(string x) damage to enemy, critrate(string y) drain(string 1) ign.sp
         List.Add(A Message Log, Operator.Join(c, Operator.Join(Operator.Join(Operator.Join(Operator.Join("oes ", floor((1 * x))), " damage to "), Sensing.Of(costume name, Enemy)), "!")));
         Sound.Play(attack);
         EnemyHP += (-1 * x);
-        If (1 == 1)
+        If (DRAIN == 1)
         {
             Call Heal(((x / (Character levels[attacker] + zAdditional HP characters (*10)[attacker])) / 3)) /10;
         }
