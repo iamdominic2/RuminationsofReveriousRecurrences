@@ -14,7 +14,7 @@ This is probably the first of my games to have a proper story.
 Essentially, this game likely took the most hours to make out of all my games. 
 Though I am glad I did manage to make something this big, I haven't done that in a while, or ever.
 
-Playable online link:
+Playable online link: https://iamdominic2.itch.io/ruminations
 
 *The file itself is too big to upload here, so:
 HTML version (download and load): https://drive.google.com/file/d/1DwZxn26CEe-8_uXumbHZuKECztCIlFC5/view?usp=sharing
