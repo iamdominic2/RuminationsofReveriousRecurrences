@@ -243,7 +243,7 @@ Define Deal(string x) damage to character(string y) drain(string d) s effect(str
     }
 }
 
-Define Deal(string x) damage to enemy, critrate(string y) drain(string DRAIN) ign.spiike(string se) othercause(string c) (warp=false) //DIRECT DAMAGE, LIKE LYRA'S HOPECUS POCUS
+Define Deal(string x) damage to enemy, critrate(string y) drain(string DRAIN) ign.spiike(string se) othercause(string c) (warp=false) //DIRECT DAMAGE, LIKE LYRA'S HOPECUS POCUS, or just damage in general
 {
     Event.Broadcast("enemyflash");
     Control.Wait(0);
@@ -311,7 +311,7 @@ Define Decrease Status(string x) nomsg(bool boolean) (warp=false) //STATUS DECRE
     Call just minus stauts direction(x)(boolean);
 }
 
-Define End of turn effects (warp=false) //STATUS CONDITIONS LIKE BURN - TO THE ENEMY SIDE!!! OCCUR.
+Define End of turn effects (warp=false) //STATUS CONDITIONS LIKE BURN - OCCUR.
 {
     If (EnemyHP > 0)
     {
